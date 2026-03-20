@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <title class="lang-jp">神成淳司 研究室 | SHINJO Atsushi Lab.</title>
+  <title class="lang-en">SHINJO Atsushi Lab. | Keio University SFC</title>
+
+  <meta property="og:title" content="神成淳司 研究室 | SHINJO Atsushi Lab." />
+  <meta property="og:description" content="食と農の未来をデザインし、データと現場で社会実装する研究会" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://shinjo-lab.keio.ac.jp/" /> <meta property="og:image" content="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop" /> <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥕</text></svg>">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { 50:'#f4f8f4',100:'#dce8dc',300:'#a8c8a8',500:'#5b9466',600:'#3f704c',700:'#31573d', 900: '#0b1d10' }, 
+            gold: { 300:'#f9e4a8',400:'#e3c46a',500:'#c6a94b' }
+          },
+          fontFamily: {
+            sans: ['Noto Sans JP','Inter','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],
+            serif: ['Playfair Display','serif']
+          },
+          boxShadow:{ soft:'0 8px 28px rgba(2,6,23,.08)' }
+        }
+      }
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <style>
+    :root { --fade-ms: 260ms; }
+    /* Light Mode (デフォルト) */
+    body { background:#f9faf8; color:#0b1d10; font-family:'Noto Sans JP', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    
+    /* ===== AOS (スクロールアニメーション) 初期設定 ===== */
+    [data-aos] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition-property: transform, opacity;
+    }
+    
+    /* ===== Header ===== */
+    .glass{ backdrop-filter: blur(10px); background:rgba(255,255,255,.7); border-bottom:1px solid rgba(198,169,75,.25); }
+    .nav-link.active{ color:#c6a94b; border-bottom:2px solid #c6a94b; }
+
+    /* ===== Pages / Transition ===== */
+    .page { display:none; opacity:0; transform:translateY(10px); transition:opacity var(--fade-ms) ease, transform var(--fade-ms) ease; }
+    .page.active { display:block; opacity:1; transform:translateY(0px); }
+
+    /* ===== Hero ===== */
+    .hero{ 
+        position:relative; 
+        height:92vh; 
+        min-height:560px; 
+        background-image:linear-gradient(rgba(49,87,61,.65),rgba(49,87,61,.65)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1920&auto=format&fit=crop'); 
+        background-size:cover; 
+        background-position:center;
+        color:#fff; 
+        text-align:center; 
+        isolation:isolate; 
+    }
+    #hero-content {
+        transition: transform 0.1s ease-out; /* パララックス用 */
+        will-change: transform;
+    }
+    .hero h1{ font-family:'Playfair Display',serif; font-weight:800; line-height:1.02; letter-spacing:.02em; font-size:clamp(48px,8vw,100px); background:linear-gradient(90deg,#f9e4a8 0%,#e3c46a 60%,#fff 100%); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 10px 36px rgba(227,196,106,.28); }
+    .hero p{ font-size:clamp(14px,2vw,18px); opacity:.95; }
+
+    /* ===== Buttons ===== */
+    .btn-main{ display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#3f704c,#5b9466); color:white; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(63,112,76,.38); transition:transform .2s ease, box-shadow .2s ease; }
+    .btn-main:hover{ transform:translateY(-1px); box-shadow:0 16px 32px rgba(63,112,76,.5); }
+
+    .btn-gold{ display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#e3c46a,#c6a94b); color:#0b1d10; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(198,169,75,.25); transition:transform .2s ease, box-shadow .2s ease; }
+    .btn-gold:hover{ transform:translateY(-1px); box-shadow:0 16px 32px rgba(198,169,75,.35); }
+    
+    /* ===== Cards ===== */
+    .card{ background:rgba(255,255,255,.95); border:1px solid rgba(198,169,75,.2); border-radius:22px; padding:1.5rem; box-shadow:0 10px 28px rgba(3,7,18,.06); transition:transform .22s ease, box-shadow .22s ease; }
+    .card:hover{ transform:translateY(-3px); box-shadow:0 18px 36px rgba(3,7,18,.12); }
+
+    h2.section-title{ font-family:'Playfair Display',serif; font-size:2.3rem; color:#3f704c; text-align:center; margin-bottom:2rem; }
+
+    /* ===== Image frames (placeholders) ===== */
+    .img-frame{
+        position:relative;
+        overflow:hidden;
+        border-radius:16px;
+        background: #f4f8f4; /* forest-50 */
+        border: 1px solid rgba(198, 169, 75, 0.3); /* gold-500 / 30% opacity */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .img-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .frame-16x9{padding-top:56.25%}
+    .frame-1x1{padding-top:100%}
+    .img-hint{ display: none; } /* ヒントテキストを非表示に */
+
+    /* ===== Footer ===== */
+    footer{ background:#0b1d10; color:#e3c46a; border-top:1px solid rgba(227,196,106,.25); }
+
+    /* ===== Language Toggle ===== */
+    html[lang="ja"] .lang-en, html[lang="ja"] .lang-en-block { display: none; }
+    html[lang="ja"] .lang-jp, html[lang="ja"] .lang-jp-block { display: inline; }
+    html[lang="ja"] .lang-jp-block { display: block; }
+
+    html[lang="en"] .lang-jp, html[lang="en"] .lang-jp-block { display: none; }
+    html[lang="en"] .lang-en, html[lang="en"] .lang-en-block { display: inline; }
+    html[lang="en"] .lang-en-block { display: block; }
+    
+    .lang-toggle-btn.active-lang { color: #c6a94b; font-weight: 700; }
+    
+    /* ===== Mobile Menu Background ===== */
+    .mobile-menu-bg {
+        background:rgba(255,255,255,.9);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* ===== 「トップへ戻る」ボタン スタイル ===== */
+    #back-to-top-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        background: #c6a94b; /* Gold Color */
+        color: #0b1d10; /* Dark text */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 4px 12px rgba(198, 169, 75, .3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
+        z-index: 1000;
+    }
+    #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    /* ▼▼▼ カスタムカーソル スタイル ▼▼▼ */
+    html.no-cursor, html.no-cursor body, html.no-cursor a, html.no-cursor button {
+        cursor: none;
+    }
+    
+    #custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        background-color: #c6a94b; /* Gold Color */
+        border-radius: 50%;
+        pointer-events: none; /* カーソルがクリックを邪魔しないように */
+        transform: translate(-50%, -50%);
+        transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        z-index: 9999;
+    }
+    /* ホバー時の拡大スタイル */
+    #custom-cursor.grow {
+        width: 28px; /* 控えめに変更 */
+        height: 28px; /* 控えめに変更 */
+        background-color: rgba(198, 169, 75, 0.4); /* 控えめに変更 */
+    }
+
+    /* ▼▼▼ 画像保護スタイル（修正）▼▼▼ */
+    .img-frame img {
+        pointer-events: none; /* マウスイベント（クリック、ドラッグ）を無効化 */
+        -webkit-user-select: none; /* テキスト選択を無効化 (Safari) */
+        -moz-user-select: none; /* (Firefox) */
+        -ms-user-select: none; /* (IE) */
+        user-select: none; /* (Chrome, Edge, Opera) */
+    }
+  </style>
+</head>
+<body class="">
+  
+  <div id="custom-cursor" class="hidden md:block"></div>
+
+  <header class="fixed top-0 left-0 w-full z-50 glass">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <a href="#" class="font-serif text-xl text-forest-700" data-page="home">SHINJO Lab.</a>
+      
+      <div class="hidden md:flex items-center space-x-1">
+        <div class="space-x-6 text-forest-700 font-semibold">
+          <a href="#" class="nav-link hover:text-gold-400" data-page="about"><span class="lang-jp">About</span><span class="lang-en">About</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="research"><span class="lang-jp">Research</span><span class="lang-en">Research</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="member"><span class="lang-jp">Member</span><span class="lang-en">Member</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="course"><span class="lang-jp">Course</span><span class="lang-en">Course</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
+        </div>
+        
+        <div id="lang-toggle-container" class="ml-4 flex items-center space-x-2 border-l border-gold-500/30 pl-4">
+          <button id="lang-toggle-jp" class="lang-toggle-btn text-sm font-semibold text-forest-700/70 hover:text-gold-400">JP</button>
+          <span class="text-forest-700/50">/</span>
+          <button id="lang-toggle-en" class="lang-toggle-btn text-sm font-semibold text-forest-700/70 hover:text-gold-400">EN</button>
+        </div>
+      </div>
+
+      <button id="mobile-menu-button" class="md:hidden text-2xl text-forest-700">
+        <ion-icon name="menu-outline" id="menu-icon-open"></ion-icon>
+        <ion-icon name="close-outline" id="menu-icon-close" class="hidden"></ion-icon>
+      </button>
+    </nav>
+
+    <div id="mobile-menu" class="hidden md:hidden mobile-menu-bg absolute top-full left-0 w-full shadow-lg">
+      <div class="flex flex-col items-center space-y-5 py-6">
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="about"><span class="lang-jp">About</span><span class="lang-en">About</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="research"><span class="lang-jp">Research</span><span class="lang-en">Research</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="member"><span class="lang-jp">Member</span><span class="lang-en">Member</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="course"><span class="lang-jp">Course</span><span class="lang-en">Course</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
+        
+        <div class="mt-4 flex items-center space-x-4 border-t border-gold-500/30 pt-4">
+          <div id="lang-toggle-container-mobile" class="flex items-center space-x-2">
+            <button id="lang-toggle-jp-mobile" class="lang-toggle-btn text-sm font-semibold text-forest-700/70">JP</button>
+            <span class="text-forest-700/50">/</span>
+            <button id="lang-toggle-en-mobile" class="lang-toggle-btn text-sm font-semibold text-forest-700/70">EN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="page-home" class="page active">
+      <div class="hero grid place-items-center">
+        <div class="px-6" data-aos="fade-up" id="hero-content">
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1 text-sm font-semibold shadow ring-1 ring-white/25 backdrop-blur">
+            <span class="lang-jp">食と農の研究会</span><span class="lang-en">Food & Agri. Lab</span>
+          </div>
+          <h1 class="mt-4">SHINJO<br/>ATSUSHI<br/>LAB.</h1>
+          <p class="max-w-2xl mx-auto">
+            <span class="lang-jp">食と農の未来をデザインし、データと現場で社会実装する研究会</span>
+            <span class="lang-en">Designing the future of food and agriculture, implementing solutions with data and fieldwork.</span>
+          </p>
+          <div class="mt-6 flex items-center justify-center gap-3">
+            <a href="#" data-page="about" class="nav-link btn-main" data-aos="fade-up" data-aos-delay="100"><ion-icon name="leaf-outline"></ion-icon>
+                <span class="lang-jp">研究会について</span><span class="lang-en">About the Lab</span>
+            </a>
+            <a href="#" data-page="contact" class="nav-link btn-gold" data-aos="fade-up" data-aos-delay="200"><ion-icon name="mail-outline"></ion-icon>
+                <span class="lang-jp">お問い合わせ</span><span class="lang-en">Contact Us</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <section class="container mx-auto max-w-4xl px-4 py-16" data-aos="fade-up">
+        <p class="text-center text-lg md:text-xl text-forest-700/90 leading-relaxed">
+          <span class="lang-jp-block">神成淳司研究会では、学生が一人ひとりテーマを持って個人研究を行い、私がその研究に対して指導していく形が基本的なスタイルです。</span>
+          <span class="lang-en-block">In the Shinjo Atsushi Lab, the basic style is for each student to have their own theme, conduct individual research, and receive direct supervision from me.</span>
+        </p>
+      </section>
+
+      <section class="container mx-auto max-w-6xl px-4 pt-0 pb-16"> 
+        <div class="card p-6 md:p-10" data-aos="fade-up">
+          <div class="grid gap-6 md:grid-cols-3 items-start">
+            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" loading="lazy"/></div>
+            <div class="md:col-span-2">
+              <h3 class="text-2xl font-bold text-forest-700">
+                <span class="lang-jp">神成 淳司 / Atsushi Shinjo</span>
+                <span class="lang-en">Atsushi Shinjo</span>
+              </h3>
+              <p class="text-gold-500 font-semibold mt-1">
+                <span class="lang-jp">博士（工学） | 慶應義塾大学 環境情報学部 教授</span>
+                <span class="lang-en">Ph.D. | Professor, Keio University SFC</span>
+              </p>
+              <p class="mt-4 text-forest-700/90">
+                <span class="lang-jp">食・農・健康・情報政策領域で、現場とデータをつなぐ社会実装研究に従事。WAGRI などのデータ基盤整備、スマート農業、フードチェーンDX、ヘルスデータ連関などを推進。</span>
+                <span class="lang-en">Engaged in social implementation research connecting field data in food, agriculture, health, and information policy. Promoting data infrastructure (WAGRI), smart agriculture, food chain DX, and health data linkage.</span>
+              </p>
+              <ul class="mt-4 list-disc pl-5 text-forest-700/80 space-y-1 text-sm">
+                <li>
+                    <span class="lang-jp">副政府CIO（2014-）/ 情報政策・スマート農業 / データ連携基盤</span>
+                    <span class="lang-en">Deputy Government CIO (2014-) / Info Policy, Smart Agri, Data Platforms</span>
+                </li>
+                <li>
+                    <span class="lang-jp">AOI-PARC 統括 / ヘルス・フードチェーン実証</span>
+                    <span class="lang-en">AOI-PARC Director / Health & Food Chain Demonstration</span>
+                </li>
+              </ul>
+              <h4 class="mt-6 font-bold text-forest-700"><span class="lang-jp">主な著述</span><span class="lang-en">Publications</span></h4>
+              <ul class="mt-2 list-disc pl-5 text-forest-700/80 space-y-1 text-sm">
+                <li><span class="lang-jp">「スマート農業」 監修 (エヌティーエス, 2019/03)</span><span class="lang-en">"Smart Agriculture" (Supervisor) (NTS, 2019/03)</span></li>
+                <li><span class="lang-jp">「ITと熟練農家の技で稼ぐ AI農業」 (日経BP社, 2017/02)</span><span class="lang-en">"AI Agriculture: Earning with IT and Veteran Farmer Skills" (Nikkei BP, 2017/02)</span></li>
+                <li><span class="lang-jp">「計算不可能性を設計する...」 ((株)ウェイツ, 2007/04)</span><span class="lang-en">"Designing Uncomputability..." (Waitz, 2007/04)</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="page-about" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4 space-y-16">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">About</h2>
+          <p class="text-forest-700/80 max-w-2xl mx-auto">
+            <span class="lang-jp">食・農・健康を横断し、<span class="font-semibold">テクノロジー×現場知</span>で社会実装を推進。データ基盤・設計・運用まで一気通貫で取り組みます。</span>
+            <span class="lang-en">Integrating food, agriculture, and health. We drive social implementation with <span class="font-semibold">Technology x Field Knowledge</span>, covering everything from data infrastructure to design and operation.</span>
+          </p>
+        </header>
+        <section class="grid md:grid-cols-3 gap-8">
+          <div class="card" data-aos="fade-up" data-aos-delay="50">
+            <h3 class="font-bold text-forest-700"><span class="lang-jp">ミッション</span><span class="lang-en">Mission</span></h3>
+            <p class="mt-2"><span class="lang-jp">最先端テクノロジーを現実の社会システムへ適用し、持続可能な食と健康のエコシステムを創る。</span><span class="lang-en">Apply cutting-edge technology to real social systems, creating a sustainable ecosystem for food and health.</span></p>
+          </div>
+          <div class="card" data-aos="fade-up" data-aos-delay="150">
+            <h3 class="font-bold text-forest-700"><span class="lang-jp">アプローチ</span><span class="lang-en">Approach</span></h3>
+            <p class="mt-2"><span class="lang-jp">産学官連携／現場実証／データ駆動の仮説検証／デザイン思考の融合。</span><span class="lang-en">Fusion of industry-academia-government collaboration, field demonstrations, data-driven hypothesis testing, and design thinking.</span></p>
+          </div>
+          <div class="card" data-aos="fade-up" data-aos-delay="250">
+            <h3 class="font-bold text-forest-700"><span class="lang-jp">価値創出</span><span class="lang-en">Value Creation</span></h3>
+            <p class="mt-2"><span class="lang-jp">生産性向上・フードロス削減・QOL向上・人材育成・標準化。</span><span class="lang-en">Productivity improvement, food loss reduction, QOL enhancement, human resource development, and standardization.</span></p>
+          </div>
+        </section>
+        <section class="grid md:grid-cols-2 gap-8 items-start">
+          <article class="card p-8" data-aos="fade-up">
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">研究領域</span><span class="lang-en">Research Areas</span></h3>
+            <ul class="mt-3 space-y-2 text-forest-700/90 list-disc pl-5">
+              <li><span class="lang-jp">スマート農業（栽培支援AI／WAGRI／分散センシング）</span><span class="lang-en">Smart Agriculture (Cultivation Support AI / WAGRI / Distributed Sensing)</span></li>
+              <li><span class="lang-jp">フードチェーンDX（需要予測／在庫最適化／可視化）</span><span class="lang-en">Food Chain DX (Demand Forecasting / Inventory Optimization / Visualization)</span></li>
+              <li><span class="lang-jp">食×健康（栄養行動・介護データの因果分析）</span><span class="lang-en">Food x Health (Causal analysis of nutritional behavior and nursing care data)</span></li>
+              <li><span class="lang-jp">情報政策・データ標準・社会実装デザイン</span><span class="lang-en">Information Policy, Data Standardization, Social Implementation Design</span></li>
+            </ul>
+          </article>
+          <aside class="card p-8 bg-gradient-to-br from-gold-300/25 to-transparent" data-aos="fade-up" data-aos-delay="100">
+            <blockquote class="text-lg italic">
+                <span class="lang-jp">「現場とデータが出会うところに、次の社会基盤が生まれる。」</span>
+                <span class="lang-en">"Where the field and data meet, the next social infrastructure is born."</span>
+            </blockquote>
+            <p class="mt-3 text-sm text-forest-700/80">— SHINJO Atsushi Lab.</p>
+          </aside>
+        </section>
+      </div>
+    </section>
+
+    <section id="page-research" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4 space-y-10">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">Research</h2>
+          <p class="text-forest-700/80 max-w-2xl mx-auto">
+            <span class="lang-jp">主な研究領域とプロジェクトの一部を紹介します（写真は16:9推奨）。</span>
+            <span class="lang-en">Introducing some of our main research areas and projects (16:9 photos recommended).</span>
+          </p>
+        </header>
+        <div class="grid md:grid-cols-2 gap-8">
+          <article class="overflow-hidden card" data-aos="fade-up">
+            <div class="img-frame frame-16x9"><img src="" alt="熟練農家の技能継承プロジェクトのイメージ画像" loading="lazy"/></div>
+            <div class="pt-4">
+              <span class="text-xs font-semibold text-gold-500">MAFF</span>
+              <h3 class="mt-1 text-xl font-bold text-forest-700"><span class="lang-jp">熟練農家の技能継承AIと栽培支援</span><span class="lang-en">Veteran Farmer Skill Transfer AI & Cultivation Support</span></h3>
+              <p class="mt-2 text-forest-700/80"><span class="lang-jp">環境・作業・生体情報を統合し、営農ナレッジを形式知化。</span><span class="lang-en">Integrating environmental, work, and biometric data to formalize farming knowledge.</span></p>
+            </div>
+          </article>
+          <article class="overflow-hidden card" data-aos="fade-up" data-aos-delay="100">
+            <div class="img-frame frame-16x9"><img src="" alt="分光・レーザーセンシングのイメージ画像" loading="lazy"/></div>
+            <div class="pt-4">
+              <span class="text-xs font-semibold text-gold-500">Advanced Tech</span>
+              <h3 class="mt-1 text-xl font-bold text-forest-700"><span class="lang-jp">分光・レーザーセンシングによる生体情報可視化</span><span class="lang-en">Biometric Data Visualization via Spectro/Laser Sensing</span></h3>
+              <p class="mt-2 text-forest-700/80"><span class="lang-jp">波長可変レーザーで非破壊センシング、栽培制御に活用。</span><span class="lang-en">Non-destructive sensing with tunable lasers for cultivation control.</span></p>
+            </div>
+          </article>
+          <article class="overflow-hidden card" data-aos="fade-up">
+            <div class="img-frame frame-16x9"><img src="" alt="食×健康プロジェクトのイメージ画像" loading="lazy"/></div>
+            <div class="pt-4">
+              <span class="text-xs font-semibold text-gold-500">Health</span>
+              <h3 class="mt-1 text-xl font-bold text-forest-700"><span class="lang-jp">食×健康の因果分析とQOL向上</span><span class="lang-en">Causal Analysis of Food x Health and QOL Improvement</span></h3>
+              <p class="mt-2 text-forest-700/80"><span class="lang-jp">栄養行動データとヘルスアウトカムを統合し政策設計へ。</span><span class="lang-en">Integrating nutritional behavior data and health outcomes for policy design.</span></p>
+            </div>
+          </article>
+          <article class="overflow-hidden card" data-aos="fade-up" data-aos-delay="100">
+            <div class="img-frame frame-16x9"><img src="" alt="フードチェーンDXプロジェクトのイメージ画像" loading="lazy"/></div>
+            <div class="pt-4">
+              <span class="text-xs font-semibold text-gold-500">Supply Chain</span>
+              <h3 class="mt-1 text-xl font-bold text-forest-700"><span class="lang-jp">フードチェーンDX（需要予測／在庫最適化）</span><span class="lang-en">Food Chain DX (Demand Forecasting / Inventory Optimization)</span></h3>
+              <p class="mt-2 text-forest-700/80"><span class="lang-jp">ロス最小化と品質維持の両立を実証。</span><span class="lang-en">Demonstrating the balance between minimizing loss and maintaining quality.</span></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-member" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4 space-y-12">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">Member</h2>
+          <p class="text-forest-700/80">
+            <span class="lang-jp">研究室のメンバー（ダミー写真は1:1推奨）。</span>
+            <span class="lang-en">Lab members (1:1 dummy photos recommended).</span>
+          </p>
+        </header>
+
+        <section class="card p-6" data-aos="fade-up">
+          <div class="grid gap-6 md:grid-cols-3 items-start">
+            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" loading="lazy"/></div>
+            <div class="md:col-span-2">
+              <h3 class="text-2xl font-bold">
+                <span class="lang-jp">神成 淳司 / Atsushi Shinjo</span>
+                <span class="lang-en">Atsushi Shinjo</span>
+              </h3>
+              <p class="text-gold-500 font-medium mt-1">
+                <span class="lang-jp">博士（工学） | 慶應義塾大学 環境情報学部 教授</span>
+                <span class="lang-en">Ph.D. | Professor, Keio University SFC</span>
+              </p>
+              <ul class="mt-4 list-disc pl-5 text-sm text-forest-700/90 space-y-1">
+                <li><span class="lang-jp">副政府CIO / 情報政策・スマート農業 / WAGRI</span><span class="lang-en">Deputy Gov. CIO / Info Policy, Smart Agri / WAGRI</span></li>
+                <li><span class="lang-jp">AOI-PARC 統括 / ヘルス・フードチェーン実証</span><span class="lang-en">AOI-PARC Director / Health & Food Chain Demo.</span></li>
+              </ul>
+              <h4 class="mt-6 font-bold text-forest-700"><span class="lang-jp">主な著述</span><span class="lang-en">Publications</span></h4>
+              <ul class="mt-2 list-disc pl-5 text-forest-700/80 space-y-1 text-sm">
+                <li><span class="lang-jp">「スマート農業」 監修 (エヌティーエス, 2019/03)</span><span class="lang-en">"Smart Agriculture" (Supervisor) (NTS, 2019/03)</span></li>
+                <li><span class="lang-jp">「ITと熟練農家の技で稼ぐ AI農業」 (日経BP社, 2017/02)</span><span class="lang-en">"AI Agriculture: Earning with IT and Veteran Farmer Skills" (Nikkei BP, 2017/02)</span></li>
+                <li><span class="lang-jp">「計算不可能性を設計する...」 ((株)ウェイツ, 2007/04)</span><span class="lang-en">"Designing Uncomputability..." (Waitz, 2007/04)</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section data-aos="fade-up">
+          <h3 class="text-xl font-bold mb-4">
+            <span class="lang-jp">教員・スタッフ</span>
+            <span class="lang-en">Faculty / Staff</span>
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div class="text-left" data-aos="fade-up">
+              <div class="img-frame frame-1x1"><img src="./images/19.jpg" alt="中島伸彦のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">中島 伸彦</span><span class="lang-en">Nobuhiko Nakajima</span></h4>
+              <div class="text-xs text-forest-700">
+                <ul class="mt-1 list-none space-y-1">
+                  <li><span class="lang-jp-block">1991年4月 野村総合研究所入社</span><span class="lang-en-block">Apr 1991: Nomura Research Institute</span></li>
+                  <li><span class="lang-jp-block">2014年8月～2020年8月 内閣官房</span><span class="lang-en-block">Aug 2014 - Aug 2020: Cabinet Secretariat</span></li>
+                  <li><span class="lang-jp-block">2020年8月～ 警察庁 長官官房技術企画課</span><span class="lang-en-block">Aug 2020 - Present: National Police Agency</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="50">
+              <div class="img-frame frame-1x1"><img src="./images/1.JPG" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="img-frame frame-1x1"><img src="./images/18shimazu.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="150">
+              <div class="img-frame frame-1x1"><img src="./images/2.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            </div>
+          </div>
+        </section>
+
+        <section data-aos="fade-up">
+          <h3 class="text-xl font-bold mb-4">
+            <span class="lang-jp">学生</span>
+            <span class="lang-en">Students</span>
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div class="text-center" data-aos="fade-up">
+              <div class="img-frame frame-1x1"><img src="./images/6.jpeg" alt="小川朋のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">小川 朋</span><span class="lang-en">Tomo Ogawa</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="50">
+              <div class="img-frame frame-1x1"><img src="./images/15.jpeg" alt="小野侑誠のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">小野 侑誠</span><span class="lang-en">Yusei Ono</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="img-frame frame-1x1"><img src="./images/16.jpg" alt="水口貴咲のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">水口 貴咲</span><span class="lang-en">Kisaki Mizuguchi</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="150">
+              <div class="img-frame frame-1x1"><img src="./images/20ogata.jpg" alt="緒方遥人のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">緒方 遥人</span><span class="lang-en">Haruto Ogata</span></h4>
+              <p class="text-xs text-forest-700"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+              <div class="img-frame frame-1x1"><img src="./images/5.jpeg" alt="谷津帆香のプロフィール写真" loading="lazy"/></div>
+              <h4 class="mt-2 font-semibold"><span class="lang-jp">谷津 帆香</span><span class="lang-en">Honoka Yatsu</span></h4>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="200"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="200"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+             <div class="text-center" data-aos="fade-up"><div class="img-frame frame-1x1"><img src="" alt="" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="page-course" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4 space-y-10">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">Course</h2>
+          <p class="text-forest-700/80 max-w-2xl mx-auto">
+            <span class="lang-jp">神成淳司研究室の関連コース一覧</span>
+            <span class="lang-en">List of related courses and seminars</span>
+          </p>
+        </header>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="card p-6" data-aos="fade-up">
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">社会イノベーションの実践</span><span class="lang-en">Practice of Social Innovation</span></h3>
+            <p class="text-sm font-semibold text-gold-500">A study of Social Innovation: Food and Health science</p>
+            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">超高齢化社会が到来し...（中略）...「食」に着目し、基礎的なサイエンスから社会実装までを実践します。</span><span class="lang-en">Focusing on "food" in a hyper-aged society, we practice from basic science to social implementation.</span></p>
+          </div>
+          <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">社会イノベーションデザイン</span><span class="lang-en">Social Innovation Design</span></h3>
+            <p class="text-sm font-semibold text-gold-500">Design for Social Innovation</p>
+            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">技術は世の中に変化を起こします...（中略）...社会問題を解決する仕組みをプロトタイピングします。</span><span class="lang-en">Technology brings change... (omitted) ...we prototype mechanisms to solve social problems.</span></p>
+          </div>
+          <div class="card p-6" data-aos="fade-up">
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">未来構想ワークショップ</span><span class="lang-en">Future Design Workshop</span></h3>
+            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">本格的な情報社会が到来した現在...（中略）...現実社会を見据えた具体的な構想を提案します。</span><span class="lang-en">In the current information society... (omitted) ...we propose concrete concepts for the real world.</span></p>
+          </div>
+           <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">モノ創り実験工房</span><span class="lang-en">Monozukuri Experimental Lab</span></h3>
+            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">モノ創りの基本は、PDCAサイクル...（中略）...「評価→改善」に重点を置き、実践的に議論します。</span><span class="lang-en">The basis of monozukuri is the PDCA cycle... (omitted) ...we focus on "Evaluation -> Improvement" and discuss practical applications.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-news" class="page">
+      <div class="container mx-auto max-w-5xl py-20 px-4 space-y-8">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">News</h2>
+          <p class="text-forest-700/80"><span class="lang-jp">最新のお知らせ。</span><span class="lang-en">Latest News.</span></p>
+        </header>
+        <article class="group overflow-hidden card" data-aos="fade-up">
+          <div class="img-frame frame-16x9"><img src="" alt="アグリテック・サミット 2025 のニュース画像" loading="lazy"/></div>
+          <div class="pt-4">
+            <p class="text-sm text-forest-700/70">2025.10.20</p>
+            <h3 class="mt-1 text-xl font-bold text-forest-700 group-hover:text-gold-500">
+                <span class="lang-jp">神成教授が「アグリテック・サミット 2025」に登壇しました。</span>
+                <span class="lang-en">Prof. Shinjo spoke at the "AgriTech Summit 2025".</span>
+            </h3>
+            <p class="mt-2 text-forest-700/80">
+                <span class="lang-jp">「スマート農業の未来とデータ駆動型社会」について講演。</span>
+                <span class="lang-en">Gave a lecture on "The Future of Smart Agriculture and Data-Driven Society."</span>
+            </p>
+          </div>
+        </article>
+        <article class="group overflow-hidden card" data-aos="fade-up" data-aos-delay="100">
+          <div class="img-frame frame-16x9"><img src="" alt="研究会メンバー募集のニュース画像" loading="lazy"/></div>
+          <div class="pt-4">
+            <p class="text-sm text-forest-700/70">2025.10.01</p>
+            <h3 class="mt-1 text-xl font-bold text-forest-700 group-hover:text-gold-500">
+                <span class="lang-jp">2026年度の研究会メンバーの募集を開始しました。</span>
+                <span class="lang-en">Recruitment for 2026 lab members has begun.</span>
+            </h3>
+            <p class="mt-2 text-forest-700/80">
+                <span class="lang-jp">募集要項はContactページからご確認ください。</span>
+                <span class="lang-en">Please check the Contact page for application details.</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="page-contact" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4 space-y-12">
+        <header class="text-center space-y-3" data-aos="fade-up">
+          <h2 class="section-title">Contact</h2>
+          <p class="text-forest-700/80">
+            <span class="lang-jp">見学・共同研究のご相談はメールでご連絡ください。</span>
+            <span class="lang-en">Please contact us by email for visits or joint research inquiries.</span>
+          </p>
+        </header>
+        <section class="grid md:grid-cols-2 gap-8 items-start">
+          <div data-aos="fade-up">
+            <div class="img-frame frame-16x9"><img src="" alt="慶應義塾大学SFCキャンパスの地図または写真" loading="lazy"/></div>
+            <p class="mt-4 text-forest-700">
+                <span class="lang-jp">〒252-0882 神奈川県藤沢市遠藤5322 慶應義塾大学 湘南藤沢キャンパス（SFC）</span>
+                <span class="lang-en">Keio University Shonan Fujisawa Campus (SFC), 5322 Endo, Fujisawa, Kanagawa 252-0882</span>
+            </p>
+          </div>
+          <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="font-bold">
+                <span class="lang-jp">連絡先</span><span class="lang-en">Contact Info</span>
+            </h3>
+            <ul class="mt-3 text-forest-700 space-y-1 text-sm">
+              <li><span class="lang-jp">神成 淳司 教授 / Prof. Atsushi Shinjo</span><span class="lang-en">Prof. Atsushi Shinjo</span></li>
+              <li>Email: XXXXX@XXXXXX.ac.jp</li>
+              <li>Tel: XX-XXXX-XXXX</li>
+            </ul>
+            <hr class="my-4 border-gold-500/20"/>
+            <h3 class="font-bold">
+                <span class="lang-jp">見学・訪問</span><span class="lang-en">Visits</span>
+            </h3>
+            <p class="mt-2 text-forest-700">
+                <span class="lang-jp">研究室見学をご希望の方は、事前にメールでご連絡ください。共同研究・技術相談も歓迎します。</span>
+                <span class="lang-en">Please contact us by email in advance if you wish to visit the lab. We also welcome joint research and technical consultations.</span>
+            </p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-8 text-center text-gold-400 text-sm">
+    © <span id="year"></span> SHINJO Atsushi Lab. | Keio University SFC
+  </footer>
+
+  <a href="#" id="back-to-top-btn" class="shadow-lg">
+    <ion-icon name="arrow-up-outline"></ion-icon>
+  </a>
+
+  <script>
+    // --- AOS初期化 ---
+    AOS.init({
+        duration: 700,
+        once: true,
+        offset: 50,
+        easing: 'ease-out-quad',
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Page Navigation ---
+    const pages = document.querySelectorAll('.page');
+    const navLinks = document.querySelectorAll('[data-page]');
+    
+    function showPage(id){ 
+      if (!id) id = 'home';
+      pages.forEach(p => { p.classList.remove('active'); }); 
+      const t = document.getElementById(`page-${id}`); 
+      if(t){ 
+        t.classList.add('active'); 
+        window.scrollTo({top:0,behavior:'instant'}); 
+        setTimeout(() => AOS.refresh(), 100);
+      } 
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.dataset.page === id);
+      });
+    }
+    
+    navLinks.forEach(l => l.addEventListener('click', e => { 
+      e.preventDefault(); 
+      const pageId = l.dataset.page;
+      showPage(pageId); 
+      history.replaceState(null,'',`#${pageId}`); 
+    }));
+    
+    function initPage(){ const hash = location.hash.replace('#',''); showPage(hash || 'home'); }
+    window.addEventListener('hashchange', () => initPage());
+    initPage();
+
+    // --- Mobile Menu Toggle ---
+    const mobileBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIconOpen = document.getElementById('menu-icon-open');
+    const menuIconClose = document.getElementById('menu-icon-close');
+
+    mobileBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      menuIconOpen.classList.toggle('hidden', !isHidden);
+      menuIconClose.classList.toggle('hidden', isHidden);
+    });
+    document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+      link.addEventListener('click', () => { 
+        mobileMenu.classList.add('hidden'); 
+        menuIconOpen.classList.remove('hidden');
+        menuIconClose.classList.add('hidden');
+      });
+    });
+
+    // --- Language Toggle Logic ---
+    const langToggles = document.querySelectorAll('.lang-toggle-btn');
+    const htmlEl = document.documentElement;
+    
+    function setLanguage(lang) {
+      htmlEl.setAttribute('lang', lang);
+      localStorage.setItem('preferredLang', lang);
+      
+      langToggles.forEach(btn => {
+        const isJP = btn.id.includes('jp');
+        const isEN = btn.id.includes('en');
+        btn.classList.toggle('active-lang', (isJP && lang === 'ja') || (isEN && lang === 'en'));
+      });
+    }
+
+    const preferredLang = localStorage.getItem('preferredLang') || 'ja';
+    setLanguage(preferredLang);
+
+    langToggles.forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.id.includes('jp')) {
+          setLanguage('ja');
+        } else if (button.id.includes('en')) {
+          setLanguage('en');
+        }
+      });
+    });
+
+    // --- 「トップへ戻る」ボタン ＆ パララックス ---
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+    const heroContent = document.getElementById('hero-content');
+    const homePage = document.getElementById('page-home');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+      if (homePage.classList.contains('active')) {
+        heroContent.style.transform = `translateY(${scrollY * 0.2}px)`;
+      }
+    });
+
+    backToTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- カスタムカーソル ---
+    const cursor = document.getElementById('custom-cursor');
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (cursor && !isTouchDevice) { 
+        document.documentElement.classList.add('no-cursor');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+        });
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, [data-aos]')) {
+                cursor.classList.add('grow');
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+             if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, [data-aos]')) {
+                cursor.classList.remove('grow');
+            }
+        });
+    } else if (cursor) {
+        cursor.style.display = 'none';
+    }
+    
+    // --- 画像保護 ---
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+        if (e.target.closest('.hero')) {
+             e.preventDefault();
+        }
+    });
+  </script>
+</body>
+</html>
