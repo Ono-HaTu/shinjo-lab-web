@@ -11,7 +11,9 @@
   <meta property="og:title" content="神成淳司 研究室 | SHINJO Atsushi Lab." />
   <meta property="og:description" content="食と農の未来をデザインし、データと現場で社会実装する研究会" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://shinjo-lab.keio.ac.jp/" /> <meta property="og:image" content="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop" /> <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://shinjo-lab.keio.ac.jp/" /> 
+  <meta property="og:image" content="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop" /> 
+  <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥕</text></svg>">
   
@@ -187,13 +189,23 @@
         background-color: rgba(198, 169, 75, 0.4); /* 控えめに変更 */
     }
 
-    /* ▼▼▼ 画像保護スタイル ▼▼▼ */
-    .img-frame img {
+    /* ▼▼▼ 画像保護・アスペクト比 ▼▼▼ */
+    .aspect-square {
+        aspect-ratio: 1 / 1;
+    }
+    .img-protected {
         pointer-events: none; /* マウスイベント（クリック、ドラッグ）を無効化 */
         -webkit-user-select: none; /* テキスト選択を無効化 (Safari) */
         -moz-user-select: none; /* (Firefox) */
         -ms-user-select: none; /* (IE) */
         user-select: none; /* (Chrome, Edge, Opera) */
+    }
+    .img-frame img {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     
     /* ニュース項目のトランジション用 */
@@ -254,6 +266,7 @@
   </header>
 
   <main>
+    <!-- ===== Home ページ ===== -->
     <section id="page-home" class="page active show">
       <div class="hero grid place-items-center">
         <div class="px-6" data-aos="fade-up" id="hero-content">
@@ -320,32 +333,90 @@
           </div>
         </div>
       </section>
+
+      <!-- ▼▼▼ 募集セクション (Home末尾) ▼▼▼ -->
+      <section class="container mx-auto max-w-5xl px-4 pb-24" data-aos="fade-up">
+        <div class="rounded-3xl bg-forest-700 p-10 md:p-16 shadow-xl text-white relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-64 h-64 bg-forest-500 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+          <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-forest-600 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+          
+          <div class="relative z-10 text-center md:text-left flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div class="flex-1">
+              <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+                <span class="lang-jp">神成淳司研究室でともに切磋琢磨し、<br class="hidden lg:block">食と農の未来を切り拓く仲間を募集しています</span>
+                <span class="lang-en">Join us to pioneer the future of food and agriculture<br class="hidden lg:block">at SHINJO Atsushi Lab.</span>
+              </h2>
+              <p class="mt-6 text-base md:text-lg text-forest-50 leading-relaxed max-w-3xl mx-auto md:mx-0">
+                <span class="lang-jp">当研究室では毎学期、テクノロジーと現場知を融合させ、社会実装に挑戦したい熱意ある新規メンバーを募集しています。<br>また、共同研究や実証実験をご希望の企業・自治体の皆様からのご連絡も心よりお待ちしております。</span>
+                <span class="lang-en">We recruit new members every semester. We welcome applications from students who want to challenge social implementation by integrating technology and field knowledge. We also welcome inquiries for joint research from companies and local governments.</span>
+              </p>
+            </div>
+            <div class="md:shrink-0 flex justify-center md:justify-end">
+              <a href="#" class="nav-link inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-bold text-forest-700 shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg focus:outline-none" data-page="contact">
+                <span class="lang-jp">お問い合わせ・募集要項</span>
+                <span class="lang-en">Contact & Application</span>
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </section>
 
+    <!-- ===== About ページ ===== -->
     <section id="page-about" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-16">
+        
         <header class="text-center space-y-3" data-aos="fade-up">
-          <h2 class="section-title">About</h2>
-          <p class="text-forest-700/80 max-w-2xl mx-auto">
-            <span class="lang-jp">食・農・健康を横断し、<span class="font-semibold">テクノロジー×現場知</span>で社会実装を推進。データ基盤・設計・運用まで一気通貫で取り組みます。</span>
-            <span class="lang-en">Integrating food, agriculture, and health. We drive social implementation with <span class="font-semibold">Technology x Field Knowledge</span>, covering everything from data infrastructure to design and operation.</span>
+          <h2 class="text-5xl md:text-6xl font-bold text-forest-700 font-serif tracking-wide">About</h2>
+          <p class="text-gold-500 font-semibold tracking-widest">
+            <span class="lang-jp">研究会について</span>
+            <span class="lang-en">About the Lab</span>
           </p>
         </header>
-        <section class="grid md:grid-cols-3 gap-8">
-          <div class="card" data-aos="fade-up" data-aos-delay="50">
-            <h3 class="font-bold text-forest-700"><span class="lang-jp">ミッション</span><span class="lang-en">Mission</span></h3>
-            <p class="mt-2"><span class="lang-jp">最先端テクノロジーを現実の社会システムへ適用し、持続可能な食と健康のエコシステムを創る。</span><span class="lang-en">Apply cutting-edge technology to real social systems, creating a sustainable ecosystem for food and health.</span></p>
+
+        <!-- 左テキスト＆写真、右カードのデザイン -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div class="lg:col-span-5 space-y-8" data-aos="fade-up" data-aos-delay="50">
+            <p class="text-gray-800 leading-relaxed font-medium">
+              <span class="lang-jp">食・農・健康を横断し、テクノロジー×現場知で社会実装を推進。データ基盤・設計・運用まで一気通貫で取り組みます。</span>
+              <span class="lang-en">Integrating food, agriculture, and health. We drive social implementation with Technology x Field Knowledge, covering everything from data infrastructure to design and operation.</span>
+            </p>
+            <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-forest-50 aspect-[4/3] relative group">
+              <!-- 後で全体写真のURLを設定 -->
+              <img src="https://placehold.co/800x600/E0E7FF/1E3A8A?text=Lab+Group+Photo" alt="研究会の全体写真" class="absolute inset-0 w-full h-full object-cover img-protected transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            </div>
           </div>
-          <div class="card" data-aos="fade-up" data-aos-delay="150">
-            <h3 class="font-bold text-forest-700"><span class="lang-jp">アプローチ</span><span class="lang-en">Approach</span></h3>
-            <p class="mt-2"><span class="lang-jp">産学官連携／現場実証／データ駆動の仮説検証／デザイン思考の融合。</span><span class="lang-en">Fusion of industry-academia-government collaboration, field demonstrations, data-driven hypothesis testing, and design thinking.</span></p>
+
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 border-l-4 border-l-gold-500 transition-transform hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="100">
+              <h3 class="text-lg font-bold text-gray-800"><span class="lang-jp">ミッション</span><span class="lang-en">Mission</span></h3>
+              <p class="text-xs font-semibold text-gold-500 mt-1">Mission</p>
+              <p class="mt-4 text-sm text-gray-600 leading-relaxed">
+                <span class="lang-jp">最先端テクノロジーを現実の社会システムへ適用し、持続可能な食と健康のエコシステムを創る。</span>
+                <span class="lang-en">Apply cutting-edge technology to real social systems, creating a sustainable ecosystem for food and health.</span>
+              </p>
+            </div>
+            <div class="bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 border-l-4 border-l-gold-500 transition-transform hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="150">
+              <h3 class="text-lg font-bold text-gray-800"><span class="lang-jp">アプローチ</span><span class="lang-en">Approach</span></h3>
+              <p class="text-xs font-semibold text-gold-500 mt-1">Approach</p>
+              <p class="mt-4 text-sm text-gray-600 leading-relaxed">
+                <span class="lang-jp">産学官連携／現場実証／データ駆動の仮説検証／デザイン思考の融合。</span>
+                <span class="lang-en">Fusion of industry-academia-government collaboration, field demonstrations, data-driven hypothesis testing, and design thinking.</span>
+              </p>
+            </div>
+            <div class="bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 border-l-4 border-l-gold-500 transition-transform hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="200">
+              <h3 class="text-lg font-bold text-gray-800"><span class="lang-jp">価値創出</span><span class="lang-en">Value Creation</span></h3>
+              <p class="text-xs font-semibold text-gold-500 mt-1">Value Creation</p>
+              <p class="mt-4 text-sm text-gray-600 leading-relaxed">
+                <span class="lang-jp">生産性向上・フードロス削減・QOL向上・人材育成・標準化。</span>
+                <span class="lang-en">Productivity improvement, food loss reduction, QOL enhancement, human resource development, and standardization.</span>
+              </p>
+            </div>
           </div>
-          <div class="card" data-aos="fade-up" data-aos-delay="250">
-            <h3 class="font-bold text-forest-700"><span class="lang-jp">価値創出</span><span class="lang-en">Value Creation</span></h3>
-            <p class="mt-2"><span class="lang-jp">生産性向上・フードロス削減・QOL向上・人材育成・標準化。</span><span class="lang-en">Productivity improvement, food loss reduction, QOL enhancement, human resource development, and standardization.</span></p>
-          </div>
-        </section>
-        <section class="grid md:grid-cols-2 gap-8 items-start">
+        </div>
+
+        <section class="grid md:grid-cols-2 gap-8 items-start pt-12 border-t border-gray-100 mt-16">
           <article class="card p-8" data-aos="fade-up">
             <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">研究領域</span><span class="lang-en">Research Areas</span></h3>
             <ul class="mt-3 space-y-2 text-forest-700/90 list-disc pl-5">
@@ -366,6 +437,7 @@
       </div>
     </section>
 
+    <!-- ===== Research ページ ===== -->
     <section id="page-research" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-10">
         <header class="text-center space-y-3" data-aos="fade-up">
@@ -375,6 +447,7 @@
             <span class="lang-en">Introducing some of our main research areas and projects (16:9 photos recommended).</span>
           </p>
         </header>
+        
         <div class="grid md:grid-cols-2 gap-8">
           <article class="overflow-hidden card" data-aos="fade-up">
             <div class="img-frame frame-16x9"><img src="" alt="熟練農家の技能継承プロジェクトのイメージ画像" loading="lazy"/></div>
@@ -410,35 +483,32 @@
           </article>
         </div>
 
-        <!-- ▼▼▼ 卒業論文・卒業プロジェクトセクション追加 ▼▼▼ -->
+        <!-- ▼▼▼ 卒業論文・卒業プロジェクトセクション (維持) ▼▼▼ -->
         <section class="mt-24 pt-12 border-t border-gray-200" data-aos="fade-up">
           <h2 class="text-3xl font-bold text-forest-700 font-serif mb-2">Thesis / Graduation Projects</h2>
           <p class="text-sm font-semibold text-gold-500 mb-8">卒業論文・卒業プロジェクト（2025年度）</p>
 
           <div class="space-y-6">
-            <!-- 卒論カード 1 -->
             <div class="bg-white border border-gray-100 rounded-lg p-6 border-l-4 border-l-gold-500 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 hover:shadow-md">
               <h3 class="text-lg font-bold text-gray-800">「スマート農業データ基盤WAGRIを活用した栽培支援システムの設計と評価」</h3>
               <p class="mt-3 text-sm font-medium text-gray-500">卒業生名（2025年3月卒業）</p>
             </div>
             
-            <!-- 卒論カード 2 -->
             <div class="bg-white border border-gray-100 rounded-lg p-6 border-l-4 border-l-gold-500 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="50">
               <h3 class="text-lg font-bold text-gray-800">「食×健康データの因果分析に基づくQOL向上施策の提案」</h3>
               <p class="mt-3 text-sm font-medium text-gray-500">卒業生名（2025年3月卒業）</p>
             </div>
             
-            <!-- 卒論カード 3 -->
             <div class="bg-white border border-gray-100 rounded-lg p-6 border-l-4 border-l-gold-500 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="100">
               <h3 class="text-lg font-bold text-gray-800">「フードチェーンDXにおける需要予測モデルの構築と実証」</h3>
               <p class="mt-3 text-sm font-medium text-gray-500">卒業生名（2025年3月卒業）</p>
             </div>
           </div>
         </section>
-        <!-- ▲▲▲ 追加完了 ▲▲▲ -->
       </div>
     </section>
 
+    <!-- ===== Member ページ ===== -->
     <section id="page-member" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-12">
         <header class="text-center space-y-3" data-aos="fade-up">
@@ -449,6 +519,7 @@
           </p>
         </header>
 
+        <!-- 教授 -->
         <section class="card p-6" data-aos="fade-up">
           <div class="grid gap-6 md:grid-cols-3 items-start">
             <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" loading="lazy"/></div>
@@ -475,7 +546,7 @@
           </div>
         </section>
 
-        <!-- 教員・スタッフ セクション -->
+        <!-- 教員・スタッフ (カードデザイン、中島さん正方形) -->
         <section data-aos="fade-up">
           <h3 class="text-xl font-bold mb-6">
             <span class="lang-jp">教員・スタッフ</span>
@@ -509,7 +580,7 @@
           </div>
         </section>
 
-        <!-- 学生 セクション -->
+        <!-- 学生 (学年順、カードデザイン、緒方さん卒業生表記) -->
         <section data-aos="fade-up">
           <h3 class="text-xl font-bold mb-6">
             <span class="lang-jp">学生</span>
@@ -541,6 +612,8 @@
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">緒方 遥人</span><span class="lang-en">Haruto Ogata</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
             </div>
+            
+            <!-- ダミー学生 -->
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/10.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/11.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/12.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
@@ -557,6 +630,7 @@
       </div>
     </section>
 
+    <!-- ===== Course Page ===== -->
     <section id="page-course" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-10">
         <header class="text-center space-y-3" data-aos="fade-up">
@@ -589,7 +663,7 @@
       </div>
     </section>
 
-    <!-- ▼▼▼ News ページ 完全リニューアル ▼▼▼ -->
+    <!-- ▼▼▼ News ページ リニューアル反映 ▼▼▼ -->
     <section id="page-news" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-12">
         <header class="text-center space-y-3" data-aos="fade-up">
@@ -659,7 +733,7 @@
                 <p class="text-sm text-gray-600 leading-relaxed">食と健康をテーマとした実践的なプロジェクト活動の様子をInstagramで報告しています。</p>
             </a>
 
-            <!-- 6. プロジェクト (画像付き・リンクなし) -->
+            <!-- 6. プロジェクト (画像付き・リンクなし => div) -->
             <div class="news-item flex flex-col bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden" data-category="project" data-aos="fade-up" data-aos-delay="100">
                 <div class="h-48 w-full bg-forest-100 relative">
                     <img src="./images/23.jpg" alt="十勝での特別研究プロジェクトの様子" class="w-full h-full object-cover">
@@ -674,7 +748,7 @@
                 </div>
             </div>
 
-            <!-- 7. お知らせ (募集開始・リンクなし) -->
+            <!-- 7. お知らせ (募集開始・リンクなし => div) -->
             <div class="news-item flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="news" data-aos="fade-up">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2025.10.01</span>
@@ -684,7 +758,7 @@
                 <p class="text-sm text-gray-600 leading-relaxed">募集要項はContactページからご確認ください。</p>
             </div>
 
-            <!-- 8. 論文・発表 (リンクなし) -->
+            <!-- 8. 論文・発表 (リンクなし => div) -->
             <div class="news-item flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="paper" data-aos="fade-up" data-aos-delay="50">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2025.08.20</span>
@@ -697,7 +771,7 @@
         </div>
       </div>
     </section>
-    <!-- ▲▲▲ News ページ 完全リニューアル ▲▲▲ -->
+    <!-- ▲▲▲ News ページ リニューアル反映 完了 ▲▲▲ -->
 
     <section id="page-contact" class="page">
       <div class="container mx-auto max-w-6xl py-20 px-4 space-y-12">
@@ -760,7 +834,7 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     const navLinks = document.querySelectorAll('[data-page]');
-    let isTransitioning = false; // アニメーション中の連打防止
+    let isTransitioning = false;
     
     function showPage(id){ 
       if (!id) id = 'home';
@@ -770,31 +844,21 @@
       if (!targetPage || targetPage === currentPage || isTransitioning) return;
       isTransitioning = true;
 
-      // ナビゲーションのハイライトは先に切り替える
       navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === id));
 
       if (currentPage) {
-        // 1. 現在のページをフワッと消す
         currentPage.classList.remove('show');
-        
-        // 2. 消え終わるのを待つ（CSSの transition: 400ms と合わせる）
         setTimeout(() => {
-          currentPage.classList.remove('active'); // 完全に非表示化
-          
-          // 3. 次のページを準備（ブロック要素にするが、透明のまま）
+          currentPage.classList.remove('active');
           targetPage.classList.add('active');
-          window.scrollTo({top:0, behavior:'instant'}); // 一瞬で一番上に戻る
-          
-          // 4. ブラウザが描画するのを一瞬待ってから、フワッと表示させる
+          window.scrollTo({top:0, behavior:'instant'});
           setTimeout(() => {
             targetPage.classList.add('show');
-            setTimeout(() => AOS.refresh(), 100); // AOSのスクロールアニメーションをリセット
+            setTimeout(() => AOS.refresh(), 100);
             isTransitioning = false;
           }, 50);
-          
-        }, 400); // <-- 400ms
+        }, 400);
       } else {
-        // 初回読み込み時
         targetPage.classList.add('active');
         setTimeout(() => {
           targetPage.classList.add('show');
@@ -918,22 +982,18 @@
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // 1. スタイルリセット
             filterBtns.forEach(b => {
                 b.classList.remove('border-gold-500', 'text-gold-500', 'font-bold');
                 b.classList.add('border-gray-200', 'text-gray-600');
             });
-            // 2. クリックされたボタンをアクティブに
             btn.classList.remove('border-gray-200', 'text-gray-600');
             btn.classList.add('border-gold-500', 'text-gold-500', 'font-bold');
 
-            // 3. フィルタリング実行
             const filterValue = btn.getAttribute('data-filter');
 
             newsItems.forEach(item => {
                 if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
                     item.style.display = 'flex';
-                    // 少し遅らせてopacityを戻すことでフワッと表示
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'translateY(0)';
@@ -941,7 +1001,6 @@
                 } else {
                     item.style.opacity = '0';
                     item.style.transform = 'translateY(10px)';
-                    // アニメーションが終わってからdisplayをnoneにする
                     setTimeout(() => {
                         item.style.display = 'none';
                     }, 300);
