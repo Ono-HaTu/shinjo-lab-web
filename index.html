@@ -186,13 +186,23 @@
         background-color: rgba(198, 169, 75, 0.4); /* 控えめに変更 */
     }
 
-    /* ▼▼▼ 画像保護スタイル ▼▼▼ */
-    .img-frame img {
+    /* ▼▼▼ アスペクト比固定 ＆ 画像保護スタイル ▼▼▼ */
+    .aspect-square {
+        aspect-ratio: 1 / 1;
+    }
+    .img-protected {
         pointer-events: none; /* マウスイベント（クリック、ドラッグ）を無効化 */
         -webkit-user-select: none; /* テキスト選択を無効化 (Safari) */
         -moz-user-select: none; /* (Firefox) */
         -ms-user-select: none; /* (IE) */
         user-select: none; /* (Chrome, Edge, Opera) */
+    }
+    .img-frame img {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
   </style>
 </head>
@@ -442,76 +452,83 @@
           </div>
         </section>
 
+        <!-- 教員・スタッフ セクション -->
         <section data-aos="fade-up">
-          <h3 class="text-xl font-bold mb-4">
+          <h3 class="text-xl font-bold mb-6">
             <span class="lang-jp">教員・スタッフ</span>
             <span class="lang-en">Faculty / Staff</span>
           </h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            <div class="text-left" data-aos="fade-up">
-              <div class="img-frame frame-1x1"><img src="./images/19.jpg" alt="中島伸彦のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">中島 伸彦</span><span class="lang-en">Nobuhiko Nakajima</span></h4>
-              <div class="text-xs text-forest-700">
-                <ul class="mt-1 list-none space-y-1">
-                  <li><span class="lang-jp-block">1991年4月 野村総合研究所入社</span><span class="lang-en-block">Apr 1991: Nomura Research Institute</span></li>
-                  <li><span class="lang-jp-block">2014年8月～2020年8月 内閣官房</span><span class="lang-en-block">Aug 2014 - Aug 2020: Cabinet Secretariat</span></li>
-                  <li><span class="lang-jp-block">2020年8月～ 警察庁 長官官房技術企画課</span><span class="lang-en-block">Aug 2020 - Present: National Police Agency</span></li>
-                </ul>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/19.jpg" alt="中島伸彦のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">中島 伸彦</span><span class="lang-en">Nobuhiko Nakajima</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p>
+              <div class="mt-4 text-sm text-gray-600 leading-relaxed">
+                <span class="lang-jp-block">1991年4月 野村総合研究所入社<br>2014年8月～2020年8月 内閣官房<br>2020年8月～ 警察庁 長官官房技術企画課</span>
+                <span class="lang-en-block">Apr 1991: Nomura Research Institute<br>Aug 2014 - Aug 2020: Cabinet Secretariat<br>Aug 2020 - Present: National Police Agency</span>
               </div>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="50">
-              <div class="img-frame frame-1x1"><img src="./images/1.JPG" alt="教員・スタッフの顔写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/1.JPG" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-              <div class="img-frame frame-1x1"><img src="./images/18shimazu.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/18shimazu.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="150">
-              <div class="img-frame frame-1x1"><img src="./images/2.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/2.jpg" alt="教員・スタッフの顔写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p>
             </div>
           </div>
         </section>
 
+        <!-- 学生 セクション -->
         <section data-aos="fade-up">
-          <h3 class="text-xl font-bold mb-4">
+          <h3 class="text-xl font-bold mb-6">
             <span class="lang-jp">学生</span>
             <span class="lang-en">Students</span>
           </h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            <div class="text-center" data-aos="fade-up">
-              <div class="img-frame frame-1x1"><img src="./images/6.jpeg" alt="小川朋のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">小川 朋</span><span class="lang-en">Tomo Ogawa</span></h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/16.jpg" alt="水口貴咲のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">水口 貴咲</span><span class="lang-en">Kisaki Mizuguchi</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部4年</span><span class="lang-en">4th Year, Env. & Info. Studies</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="50">
-              <div class="img-frame frame-1x1"><img src="./images/15.jpeg" alt="小野侑誠のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">小野 侑誠</span><span class="lang-en">Yusei Ono</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/20ogata.jpg" alt="緒方遥人のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">緒方 遥人</span><span class="lang-en">Haruto Ogata</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-              <div class="img-frame frame-1x1"><img src="./images/16.jpg" alt="水口貴咲のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">水口 貴咲</span><span class="lang-en">Kisaki Mizuguchi</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/6.jpeg" alt="小川朋のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小川 朋</span><span class="lang-en">Tomo Ogawa</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">総合政策学部3年</span><span class="lang-en">3rd Year, Policy Management</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="150">
-              <div class="img-frame frame-1x1"><img src="./images/20ogata.jpg" alt="緒方遥人のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">緒方 遥人</span><span class="lang-en">Haruto Ogata</span></h4>
-              <p class="text-xs text-forest-700"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/5.jpeg" alt="谷津帆香のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">谷津 帆香</span><span class="lang-en">Honoka Yatsu</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部3年</span><span class="lang-en">3rd Year, Env. & Info. Studies</span></p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-              <div class="img-frame frame-1x1"><img src="./images/5.jpeg" alt="谷津帆香のプロフィール写真" loading="lazy"/></div>
-              <h4 class="mt-2 font-semibold"><span class="lang-jp">谷津 帆香</span><span class="lang-en">Honoka Yatsu</span></h4>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/15.jpeg" alt="小野侑誠のプロフィール写真" loading="lazy"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小野 侑誠</span><span class="lang-en">Yusei Ono</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部2年</span><span class="lang-en">2nd Year, Env. & Info. Studies</span></p>
             </div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1"><img src="./images/10.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up"><div class="img-frame frame-1x1"><img src="./images/11.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1"><img src="./images/12.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1"><img src="./images/13.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1"><img src="./images/14.jpeg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="200"><div class="img-frame frame-1x1"><img src="./images/17.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1"><img src="./images/3.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up"><div class="img-frame frame-1x1"><img src="./images/7.JPG" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1"><img src="./images/8.JPG" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1"><img src="./images/9.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
-             <div class="text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1"><img src="./images/21.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="mt-2 font-semibold"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/10.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/11.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/12.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/13.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/14.jpeg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/17.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/3.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/7.JPG" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/8.JPG" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/9.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150"><div class="img-frame frame-1x1 w-full mb-6"><img src="./images/21.jpg" alt="学生の顔写真" loading="lazy"/></div><h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">氏名</span><span class="lang-en">Name</span></h4><p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">&nbsp;</span><span class="lang-en">&nbsp;</span></p></div>
           </div>
         </section>
       </div>
