@@ -212,9 +212,66 @@
     .news-item {
         transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    /* ▼▼▼ オープニングアニメーション (スプラッシュスクリーン) ▼▼▼ */
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #f9faf8; /* サイト背景色と同じ */
+        z-index: 999999; /* 一番手前に表示 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* フェードアウト時のクラス */
+    #splash-screen.hidden-splash {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-20px);
+    }
+    .splash-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: #3f704c; /* forest-600 */
+        opacity: 0;
+        animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .splash-sub {
+        margin-top: 0.75rem;
+        font-size: clamp(0.75rem, 2vw, 1rem);
+        color: #c6a94b; /* gold-500 */
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        opacity: 0;
+        animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    @keyframes fadeUpSplash {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* ▲▲▲ オープニングアニメーション ▲▲▲ */
   </style>
 </head>
 <body class="">
+
+  <!-- ▼▼▼ オープニング画面 (bodyの直下に追加) ▼▼▼ -->
+  <div id="splash-screen">
+      <div class="splash-logo">SHINJO Atsushi Lab.</div>
+      <div class="splash-sub">KEIO UNIVERSITY SFC</div>
+  </div>
+  <!-- ▲▲▲ オープニング画面 ▲▲▲ -->
   
   <div id="custom-cursor" class="hidden md:block"></div>
 
@@ -291,15 +348,24 @@
       
       <section class="container mx-auto max-w-4xl px-4 py-16" data-aos="fade-up">
         <p class="text-center text-lg md:text-xl text-forest-700/90 leading-relaxed">
-          <span class="lang-jp-block">神成淳司研究会では、学生が一人ひとりテーマを持って個人研究を行い、私がその研究に対して指導していく形が基本的なスタイルです。</span>
-          <span class="lang-en-block">In the Shinjo Atsushi Lab, the basic style is for each student to have their own theme, conduct individual research, and receive direct supervision from me.</span>
+          <span class="lang-jp-block">
+            神成淳司研究会では、学生が一人ひとりテーマを持って個人研究を行い、<br class="hidden md:inline">
+            私がその研究に対して指導していく形が基本的なスタイルです。<br>
+            授業を通じ、学生個々人が、<span class="inline-block">多様な課題に対応していく素養を</span><span class="inline-block">養うことを期待します。</span><br>
+            <span class="inline-block">重要な点は、</span><span class="inline-block">履修者自身の興味と意欲です。</span>
+          </span>
+          <span class="lang-en-block">
+            In the Shinjo Atsushi Lab, the basic style is for each student to have their own theme, conduct individual research, and receive direct supervision from me.<br>
+            Through our classes, we expect each student to cultivate the foundation to address diverse challenges.<br>
+            The most important factor is the student's own interest and motivation.
+          </span>
         </p>
       </section>
 
       <section class="container mx-auto max-w-6xl px-4 pt-0 pb-16"> 
         <div class="card p-6 md:p-10" data-aos="fade-up">
           <div class="grid gap-6 md:grid-cols-3 items-start">
-            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" loading="lazy"/></div>
+            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" style="object-position: center 20%;" loading="lazy"/></div>
             <div class="md:col-span-2">
               <h3 class="text-2xl font-bold text-forest-700">
                 <span class="lang-jp">神成 淳司 / Atsushi Shinjo</span>
@@ -519,10 +585,9 @@
           </p>
         </header>
 
-        <!-- 教授 -->
         <section class="card p-6" data-aos="fade-up">
           <div class="grid gap-6 md:grid-cols-3 items-start">
-            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" loading="lazy"/></div>
+            <div class="img-frame frame-1x1"><img src="./images/4.jpg" alt="神成淳司教授のプロフィール写真" style="object-position: center 20%;" loading="lazy"/></div>
             <div class="md:col-span-2">
               <h3 class="text-2xl font-bold">
                 <span class="lang-jp">神成 淳司 / Atsushi Shinjo</span>
@@ -642,22 +707,24 @@
         </header>
         <div class="grid md:grid-cols-2 gap-8">
           <div class="card p-6" data-aos="fade-up">
-            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">社会イノベーションの実践</span><span class="lang-en">Practice of Social Innovation</span></h3>
-            <p class="text-sm font-semibold text-gold-500">A study of Social Innovation: Food and Health science</p>
-            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">超高齢化社会が到来し...（中略）...「食」に着目し、基礎的なサイエンスから社会実装までを実践します。</span><span class="lang-en">Focusing on "food" in a hyper-aged society, we practice from basic science to social implementation.</span></p>
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">研究会A</span><span class="lang-en">Seminar A</span></h3>
+            <p class="text-sm font-semibold text-gold-500">神成 淳司 / 4単位</p>
+            <p class="mt-2 text-forest-700/80 text-sm leading-relaxed"><span class="lang-jp">「食」分野は、今後最も成長が見込まれる領域です。健康、美味しさ、さらには食糧危機やフードダイバーシティなど、様々な検討課題が存在します。<br><br>本研究会では、地域における持続可能な食環境の実現を中核に、履修者の「食」に関する興味を踏まえた個人研究を指導します。<br><br>教員は、履修者自身が興味を掘り下げ、リサーチクエスチョンを設定し、具体的な研究テーマとして取り組むことを支援します。</span><span class="lang-en">The "food" sector is expected to grow significantly. We supervise individual research based on students' interests in "food", centering on realizing sustainable food environments in local communities.</span></p>
           </div>
           <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">社会イノベーションデザイン</span><span class="lang-en">Social Innovation Design</span></h3>
-            <p class="text-sm font-semibold text-gold-500">Design for Social Innovation</p>
-            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">技術は世の中に変化を起こします...（中略）...社会問題を解決する仕組みをプロトタイピングします。</span><span class="lang-en">Technology brings change... (omitted) ...we prototype mechanisms to solve social problems.</span></p>
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">未来構想ワークショップ</span><span class="lang-en">Future Design Workshop</span></h3>
+            <p class="text-sm font-semibold text-gold-500">グループワーク形式</p>
+            <p class="mt-2 text-forest-700/80 text-sm leading-relaxed"><span class="lang-jp">生成AIの活用を前提としたグループワーク形式の講義。現実社会のテーマを取り上げ、課題解決の議論を通じて問題発見能力とプレゼンテーション能力の向上を図ります。<br><br>4つの異なるテーマに関するグループワーク（未来構想）を実施。テーマの多くは、実際に企業が直面する課題に関するもので、企業側が課題を提示します。<br><br>※2026年度の参加企業は調整中（第一回授業時に発表）</span><span class="lang-en">Group work lecture assuming the use of generative AI. We address real-world themes, aiming to improve problem-finding and presentation skills through problem-solving discussions.</span></p>
           </div>
           <div class="card p-6" data-aos="fade-up">
-            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">未来構想ワークショップ</span><span class="lang-en">Future Design Workshop</span></h3>
-            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">本格的な情報社会が到来した現在...（中略）...現実社会を見据えた具体的な構想を提案します。</span><span class="lang-en">In the current information society... (omitted) ...we propose concrete concepts for the real world.</span></p>
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">モノ創り実験工房</span><span class="lang-en">Monozukuri Experimental Lab</span></h3>
+            <p class="text-sm font-semibold text-gold-500">PDCAサイクルの実践</p>
+            <p class="mt-2 text-forest-700/80 text-sm leading-relaxed"><span class="lang-jp">発想・設計（Plan）→ プロトタイピング・計測（Do）→ 評価・分析（Check）→ 改善（Act）のPDCAサイクルを実践。「評価→改善」に重点を置き、モノ創りのプロセスを実践的に議論します。<br><br>オムニバス形式のテーマ：<br>センサ素子と無線センサユニット（高汐）/ LEGO MindStorm 自律移動ロボット（神成）/ 自走式機械の構築と制御（大前）</span><span class="lang-en">Practice the PDCA cycle of manufacturing. Focusing on "Evaluation -> Improvement", we discuss the manufacturing process practically.</span></p>
           </div>
            <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">モノ創り実験工房</span><span class="lang-en">Monozukuri Experimental Lab</span></h3>
-            <p class="mt-2 text-forest-700/80 text-sm"><span class="lang-jp">モノ創りの基本は、PDCAサイクル...（中略）...「評価→改善」に重点を置き、実践的に議論します。</span><span class="lang-en">The basis of monozukuri is the PDCA cycle... (omitted) ...we focus on "Evaluation -> Improvement" and discuss practical applications.</span></p>
+            <h3 class="text-xl font-bold text-forest-700"><span class="lang-jp">スポーツによる地域振興</span><span class="lang-en">Regional Promotion through Sports</span></h3>
+            <p class="text-sm font-semibold text-gold-500">寄附講座</p>
+            <p class="mt-2 text-forest-700/80 text-sm leading-relaxed"><span class="lang-jp">スポーツを核とした地域振興に着目し、イベント興行やプロスポーツ誘致等による地域経済の発展に加え、健康増進や教育、新規ビジネスといった多様な波及効果について学びます。実務者を講師に招き、ワークショップ方式で具体的な解決法を検討します。</span><span class="lang-en">Focusing on regional promotion centered on sports, we learn about the development of the regional economy and diverse ripple effects such as health promotion, education, and new businesses.</span></p>
           </div>
         </div>
       </div>
@@ -824,6 +891,20 @@
   </a>
 
   <script>
+    // --- ▼▼▼ オープニングアニメーション制御 (scriptの最初に追加) ▼▼▼ ---
+    window.addEventListener('load', () => {
+        const splash = document.getElementById('splash-screen');
+        // ページ読み込み完了後、1.5秒間ロゴを見せてからフェードアウト
+        setTimeout(() => {
+            splash.classList.add('hidden-splash');
+            // CSSのトランジション完了後（0.8秒後）に裏側から完全に削除
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 800);
+        }, 1500); 
+    });
+    // --- ▲▲▲ オープニングアニメーション制御 ▲▲▲ ---
+
     AOS.init({
         duration: 700,
         once: true,
