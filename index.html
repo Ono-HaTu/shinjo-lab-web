@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 初期言語を 'ja' に設定 -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -36,83 +37,237 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <style>
+    /* ▼▼▼ アニメーション時間を400msに伸ばし、高級感のある設定に ▼▼▼ */
     :root { --fade-ms: 400ms; }
+    
+    /* Light Mode (デフォルト) */
     body { background:#f9faf8; color:#0b1d10; font-family:'Noto Sans JP', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
     
-    [data-aos] { opacity: 0; transform: translateY(20px); transition-property: transform, opacity; }
+    /* ===== AOS (スクロールアニメーション) 初期設定 ===== */
+    [data-aos] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition-property: transform, opacity;
+    }
     
+    /* ===== Header ===== */
     .glass{ backdrop-filter: blur(10px); background:rgba(255,255,255,.7); border-bottom:1px solid rgba(198,169,75,.25); }
     .nav-link.active{ color:#c6a94b; border-bottom:2px solid #c6a94b; }
 
-    .page { display: none; opacity: 0; transform: translateY(15px); transition: opacity var(--fade-ms) cubic-bezier(0.4, 0, 0.2, 1), transform var(--fade-ms) cubic-bezier(0.4, 0, 0.2, 1); }
+    /* ===== Pages / Transition (ジワっとヌルっとさせるためのCSS) ===== */
+    .page { 
+      display: none; 
+      opacity: 0; 
+      transform: translateY(15px); 
+      /* より滑らかな動き（cubic-bezier）を採用 */
+      transition: opacity var(--fade-ms) cubic-bezier(0.4, 0, 0.2, 1), transform var(--fade-ms) cubic-bezier(0.4, 0, 0.2, 1); 
+    }
     .page.active { display: block; }
     .page.show { opacity: 1; transform: translateY(0px); }
 
-    .hero{ position:relative; height: 100vh; height: 100dvh; min-height:560px; background-image:linear-gradient(rgba(49,87,61,.65),rgba(49,87,61,.65)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1920&auto=format&fit=crop'); background-size:cover; background-position:center; color:#fff; text-align:center; isolation:isolate; }
-    #hero-content { transition: transform 0.1s ease-out; will-change: transform; }
+    /* ===== Hero ===== */
+    .hero{ 
+        position:relative; 
+        height: 100vh;
+        height: 100dvh;
+        min-height:560px; 
+        background-image:linear-gradient(rgba(49,87,61,.65),rgba(49,87,61,.65)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1920&auto=format&fit=crop'); 
+        background-size:cover; 
+        background-position:center;
+        color:#fff; 
+        text-align:center; 
+        isolation:isolate; 
+    }
+    #hero-content {
+        transition: transform 0.1s ease-out; /* パララックス用 */
+        will-change: transform;
+    }
     .hero h1{ font-family:'Playfair Display',serif; font-weight:800; line-height:1.02; letter-spacing:.02em; font-size:clamp(48px,8vw,100px); background:linear-gradient(90deg,#f9e4a8 0%,#e3c46a 60%,#fff 100%); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 10px 36px rgba(227,196,106,.28); }
     .hero p{ font-size:clamp(14px,2vw,18px); opacity:.95; }
 
+    /* ===== Buttons ===== */
     .btn-main{ display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#3f704c,#5b9466); color:white; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(63,112,76,.38); transition:transform .2s ease, box-shadow .2s ease; }
     .btn-main:hover{ transform:translateY(-1px); box-shadow:0 16px 32px rgba(63,112,76,.5); }
+
     .btn-gold{ display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#e3c46a,#c6a94b); color:#0b1d10; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(198,169,75,.25); transition:transform .2s ease, box-shadow .2s ease; }
     .btn-gold:hover{ transform:translateY(-1px); box-shadow:0 16px 32px rgba(198,169,75,.35); }
     
+    /* ===== Cards ===== */
     .card{ background:rgba(255,255,255,.95); border:1px solid rgba(198,169,75,.2); border-radius:22px; padding:1.5rem; box-shadow:0 10px 28px rgba(3,7,18,.06); transition:transform .22s ease, box-shadow .22s ease; }
     .card:hover{ transform:translateY(-3px); box-shadow:0 18px 36px rgba(3,7,18,.12); }
 
     h2.section-title{ font-family:'Playfair Display',serif; font-size:2.3rem; color:#3f704c; text-align:center; margin-bottom:2rem; }
 
-    .img-frame{ position:relative; overflow:hidden; border-radius:16px; background: #f4f8f4; border: 1px solid rgba(198, 169, 75, 0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    /* ===== Image frames (placeholders) ===== */
+    .img-frame{
+        position:relative;
+        overflow:hidden;
+        border-radius:16px;
+        background: #f4f8f4; /* forest-50 */
+        border: 1px solid rgba(198, 169, 75, 0.3); /* gold-500 / 30% opacity */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
     .img-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
     .frame-16x9{padding-top:56.25%}
     .frame-1x1{padding-top:100%}
 
+    /* ===== Footer ===== */
     footer{ background:#0b1d10; color:#e3c46a; border-top:1px solid rgba(227,196,106,.25); }
 
+    /* ===== Language Toggle ===== */
     html[lang="ja"] .lang-en, html[lang="ja"] .lang-en-block { display: none; }
     html[lang="ja"] .lang-jp, html[lang="ja"] .lang-jp-block { display: inline; }
     html[lang="ja"] .lang-jp-block { display: block; }
+
     html[lang="en"] .lang-jp, html[lang="en"] .lang-jp-block { display: none; }
     html[lang="en"] .lang-en, html[lang="en"] .lang-en-block { display: inline; }
     html[lang="en"] .lang-en-block { display: block; }
     
     .lang-toggle-btn.active-lang { color: #c6a94b; font-weight: 700; }
-    .mobile-menu-bg { background:rgba(255,255,255,.9); backdrop-filter: blur(10px); }
     
-    #back-to-top-btn { position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px; background: #c6a94b; color: #0b1d10; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(198, 169, 75, .3); opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .3s ease, visibility .3s ease, transform .3s ease; z-index: 1000; }
-    #back-to-top-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    /* ===== Mobile Menu Background ===== */
+    .mobile-menu-bg {
+        background:rgba(255,255,255,.9);
+        backdrop-filter: blur(10px);
+    }
     
-    html.no-cursor, html.no-cursor body, html.no-cursor a, html.no-cursor button { cursor: none; }
-    #custom-cursor { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background-color: #c6a94b; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease; z-index: 9999; }
-    #custom-cursor.grow { width: 28px; height: 28px; background-color: rgba(198, 169, 75, 0.4); }
+    /* ===== 「トップへ戻る」ボタン スタイル ===== */
+    #back-to-top-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        background: #c6a94b; /* Gold Color */
+        color: #0b1d10; /* Dark text */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 4px 12px rgba(198, 169, 75, .3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: opacity .3s ease, visibility .3s ease, transform .3s ease;
+        z-index: 1000;
+    }
+    #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    /* ▼▼▼ カスタムカーソル スタイル ▼▼▼ */
+    html.no-cursor, html.no-cursor body, html.no-cursor a, html.no-cursor button {
+        cursor: none;
+    }
+    
+    #custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        background-color: #c6a94b; /* Gold Color */
+        border-radius: 50%;
+        pointer-events: none; /* カーソルがクリックを邪魔しないように */
+        transform: translate(-50%, -50%);
+        transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        z-index: 9999;
+    }
+    /* ホバー時の拡大スタイル */
+    #custom-cursor.grow {
+        width: 28px; /* 控えめに変更 */
+        height: 28px; /* 控えめに変更 */
+        background-color: rgba(198, 169, 75, 0.4); /* 控えめに変更 */
+    }
 
-    .img-protected, .img-frame img { pointer-events: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-    .news-item { transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
+    /* ▼▼▼ 画像保護 ▼▼▼ */
+    .img-protected, .img-frame img {
+        pointer-events: none; /* マウスイベント（クリック、ドラッグ）を無効化 */
+        -webkit-user-select: none; /* テキスト選択を無効化 (Safari) */
+        -moz-user-select: none; /* (Firefox) */
+        -ms-user-select: none; /* (IE) */
+        user-select: none; /* (Chrome, Edge, Opera) */
+    }
+    
+    /* ニュース項目のトランジション用 */
+    .news-item {
+        transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-    #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #f9faf8; z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-    #splash-screen.hidden-splash { opacity: 0; pointer-events: none; transform: translateY(-20px); }
-    .splash-logo { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: #3f704c; opacity: 0; animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    .splash-sub { margin-top: 0.75rem; font-size: clamp(0.75rem, 2vw, 1rem); color: #c6a94b; font-weight: 600; letter-spacing: 0.15em; opacity: 0; animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards; }
-    @keyframes fadeUpSplash { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* ▼▼▼ オープニングアニメーション (スプラッシュスクリーン) ▼▼▼ */
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #f9faf8; /* サイト背景色と同じ */
+        z-index: 999999; /* 一番手前に表示 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* フェードアウト時のクラス */
+    #splash-screen.hidden-splash {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-20px);
+    }
+    .splash-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: #3f704c; /* forest-600 */
+        opacity: 0;
+        animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .splash-sub {
+        margin-top: 0.75rem;
+        font-size: clamp(0.75rem, 2vw, 1rem);
+        color: #c6a94b; /* gold-500 */
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        opacity: 0;
+        animation: fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    @keyframes fadeUpSplash {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* ▲▲▲ オープニングアニメーション ▲▲▲ */
   </style>
 </head>
-<body>
+<body class="">
 
+  <!-- ▼▼▼ オープニング画面 (bodyの直下に追加) ▼▼▼ -->
   <div id="splash-screen">
       <div class="splash-logo">SHINJO Atsushi Lab.</div>
       <div class="splash-sub">KEIO UNIVERSITY SFC</div>
   </div>
+  <!-- ▲▲▲ オープニング画面 ▲▲▲ -->
   
   <div id="custom-cursor" class="hidden md:block"></div>
 
   <header class="fixed top-0 left-0 w-full z-50 glass">
     <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
       <a href="#" class="font-serif text-xl text-forest-700" data-page="home">SHINJO Lab.</a>
+      
       <div class="hidden md:flex items-center space-x-1">
         <div class="space-x-6 text-forest-700 font-semibold">
           <a href="#" class="nav-link hover:text-gold-400" data-page="about"><span class="lang-jp">About</span><span class="lang-en">About</span></a>
@@ -122,17 +277,20 @@
           <a href="#" class="nav-link hover:text-gold-400" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
           <a href="#" class="nav-link hover:text-gold-400" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
         </div>
+        
         <div id="lang-toggle-container" class="ml-4 flex items-center space-x-2 border-l border-gold-500/30 pl-4">
           <button id="lang-toggle-jp" class="lang-toggle-btn text-sm font-semibold text-forest-700/70 hover:text-gold-400">JP</button>
           <span class="text-forest-700/50">/</span>
           <button id="lang-toggle-en" class="lang-toggle-btn text-sm font-semibold text-forest-700/70 hover:text-gold-400">EN</button>
         </div>
       </div>
+
       <button id="mobile-menu-button" class="md:hidden text-2xl text-forest-700">
         <ion-icon name="menu-outline" id="menu-icon-open"></ion-icon>
         <ion-icon name="close-outline" id="menu-icon-close" class="hidden"></ion-icon>
       </button>
     </nav>
+
     <div id="mobile-menu" class="hidden md:hidden mobile-menu-bg absolute top-full left-0 w-full shadow-lg">
       <div class="flex flex-col items-center space-y-5 py-6">
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="about"><span class="lang-jp">About</span><span class="lang-en">About</span></a>
@@ -141,6 +299,7 @@
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="course"><span class="lang-jp">Course</span><span class="lang-en">Course</span></a>
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
+        
         <div class="mt-4 flex items-center space-x-4 border-t border-gold-500/30 pt-4">
           <div id="lang-toggle-container-mobile" class="flex items-center space-x-2">
             <button id="lang-toggle-jp-mobile" class="lang-toggle-btn text-sm font-semibold text-forest-700/70">JP</button>
@@ -268,6 +427,13 @@
               <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-forest-50 aspect-[4/3] relative group">
                 <img src="./images/28.jpg" alt="研究会の全体写真" class="absolute inset-0 w-full h-full object-cover img-protected transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
               </div>
+              
+              <div class="mt-8 mb-2 flex items-center justify-center gap-4 text-forest-700">
+                <div class="h-px w-12 md:w-16 bg-gold-500/50"></div>
+                <span class="text-5xl md:text-6xl font-bold font-serif tracking-widest">2026</span>
+                <div class="h-px w-12 md:w-16 bg-gold-500/50"></div>
+              </div>
+
               <div class="flex flex-wrap gap-2 mt-5">
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#食と農業</span><span class="lang-en">#FoodAndAgriculture</span></span>
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#スマート農業</span><span class="lang-en">#SmartAgriculture</span></span>
@@ -282,6 +448,7 @@
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#社会実装</span><span class="lang-en">#SocialImplementation</span></span>
               </div>
             </div>
+            
             <p class="text-center text-gold-500 text-lg md:text-xl font-bold leading-relaxed tracking-wide">
               <span class="lang-jp">
                 <span class="inline-block">食・農・健康を横断し、</span><span class="inline-block">テクノロジー×現場知で</span><span class="inline-block">社会実装を推進</span><br>
@@ -551,53 +718,52 @@
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/16.jpg" alt="水口貴咲のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">水口 貴咲</span><span class="lang-en">Kisaki Mizuguchi</span></h4>
-              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部4年</span><span class="lang-en">4th Year, Env. & Info. Studies</span></p>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/6.jpeg" alt="小川朋のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小川 朋</span><span class="lang-en">Tomo Ogawa</span></h4>
-              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">総合政策学部4年</span><span class="lang-en">4th Year, Policy Management</span></p>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
-              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/5.jpeg" alt="谷津帆香のプロフィール写真" loading="lazy" decoding="async"/></div>
-              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">谷津 帆香</span><span class="lang-en">Honoka Yatsu</span></h4>
-              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部3年</span><span class="lang-en">3rd Year, Env. & Info. Studies</span></p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
-              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/15.jpeg" alt="小野侑誠のプロフィール写真" loading="lazy" decoding="async"/></div>
-              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小野 侑誠</span><span class="lang-en">Yusei Ono</span></h4>
-              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">環境情報学部2年</span><span class="lang-en">2nd Year, Env. & Info. Studies</span></p>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="https://placehold.co/400x400/f4f8f4/a8c8a8?text=No+Image" alt="久保華奈多のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">久保 華奈多</span><span class="lang-en">Kanata Kubo</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/9.jpg" alt="叶くえいのプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">叶 くえい</span><span class="lang-en">Kuei Kano</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/21.jpg" alt="古川万里子のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">古川 万里子</span><span class="lang-en">Mariko Furukawa</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/14.jpeg" alt="齋藤未央のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">齋藤 未央</span><span class="lang-en">Mio Saito</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/27.jpg" alt="垣田幸海のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">垣田 幸海</span><span class="lang-en">Yukimi Kakita</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/3.jpg" alt="西野圭達のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">西野 圭達</span><span class="lang-en">Keitatsu Nishino</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">4年</span><span class="lang-en">4th Year Student</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/15.jpeg" alt="小野侑誠のプロフィール写真" loading="lazy" decoding="async"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小野 侑誠</span><span class="lang-en">Yusei Ono</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">3年</span><span class="lang-en">3rd Year Student</span></p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/5.jpeg" alt="谷津帆香のプロフィール写真" loading="lazy" decoding="async"/></div>
+              <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">谷津 帆香</span><span class="lang-en">Honoka Yatsu</span></h4>
+              <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">3年</span><span class="lang-en">3rd Year Student</span></p>
             </div>
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/13.jpg" alt="加田弓乃のプロフィール写真" loading="lazy" decoding="async"/></div>
@@ -717,11 +883,21 @@
         </header>
 
         <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up" data-aos-delay="50">
-            <button class="news-filter-btn border-gold-500 text-gold-500 font-bold border rounded px-6 py-2 transition-colors focus:outline-none" data-filter="all">すべて</button>
-            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="news">お知らせ</button>
-            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="media">メディア</button>
-            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="publication">論文・発表</button>
-            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="project">プロジェクト</button>
+            <button class="news-filter-btn border-gold-500 text-gold-500 font-bold border rounded px-6 py-2 transition-colors focus:outline-none" data-filter="all">
+                <span class="lang-jp">すべて</span><span class="lang-en">All</span>
+            </button>
+            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="news">
+                <span class="lang-jp">お知らせ</span><span class="lang-en">News</span>
+            </button>
+            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="media">
+                <span class="lang-jp">メディア</span><span class="lang-en">Media</span>
+            </button>
+            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="publication">
+                <span class="lang-jp">論文・発表</span><span class="lang-en">Publications</span>
+            </button>
+            <button class="news-filter-btn border-gray-200 text-gray-600 border rounded px-6 py-2 hover:border-gold-500 hover:text-gold-500 transition-colors focus:outline-none" data-filter="project">
+                <span class="lang-jp">プロジェクト</span><span class="lang-en">Projects</span>
+            </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="news-grid">
@@ -732,13 +908,16 @@
                 <div class="p-8 flex-1 flex flex-col">
                     <div class="flex items-center space-x-2 mb-4">
                         <span class="text-sm font-medium text-gray-500 mr-1">2026.03.11</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">論文・発表</span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">論文・発表</span><span class="lang-en">Publication</span></span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">2026年度春学期特別研究プロジェクトを北九州で行いました。</h3>
+                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                        <span class="lang-jp">2026年度春学期特別研究プロジェクトを北九州で行いました。</span>
+                        <span class="lang-en">Conducted the Spring 2026 Special Research Project in Kitakyushu.</span>
+                    </h3>
                     <p class="text-sm text-gray-600 leading-relaxed">
-                        「食で北九州市に若者を惹きつける」という大きな枠の中で、各グループ個別の視点でテーマを決めて市役所へ提案を行いました。<br>
-                        <span class="text-xs text-gray-500 mt-3 block font-medium">令和8年3月9日(月)～3月11日(水)</span>
+                        <span class="lang-jp">「食で北九州市に若者を惹きつける」という大きな枠の中で、各グループ個別の視点でテーマを決めて市役所へ提案を行いました。<br><span class="text-xs text-gray-500 mt-3 block font-medium">令和8年3月9日(月)～3月11日(水)</span></span>
+                        <span class="lang-en">Under the broad theme of "Attracting young people to Kitakyushu City through food," each group decided on a theme from their unique perspective and made a proposal to the city hall.<br><span class="text-xs text-gray-500 mt-3 block font-medium">March 9 (Mon) - 11 (Wed), 2026</span></span>
                     </p>
                 </div>
             </div>
@@ -746,10 +925,16 @@
             <a href="https://www.fnn.jp/articles/-/1013074" target="_blank" rel="noopener noreferrer" class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="media" data-aos="fade-up" data-aos-delay="50">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2026.03.10</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">メディア</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">メディア</span><span class="lang-en">Media</span></span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">FNNプライムオンラインで北九州フィールドワークが報道されました。</h3>
-                <p class="text-sm text-gray-600 leading-relaxed mb-6">慶大生が「すしの都」北九州市で食を生かした街づくりを学ぶフィールドワークの様子が放送されました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">FNNプライムオンラインで北九州フィールドワークが報道されました。</span>
+                    <span class="lang-en">Kitakyushu fieldwork was reported on FNN Prime Online.</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                    <span class="lang-jp">慶大生が「すしの都」北九州市で食を生かした街づくりを学ぶフィールドワークの様子が放送されました。</span>
+                    <span class="lang-en">A broadcast featured Keio University students learning about city planning utilizing food during fieldwork in Kitakyushu, the "Capital of Sushi."</span>
+                </p>
                 <div class="mt-auto flex items-center text-gold-500 font-semibold text-sm group-hover:text-gold-400 transition-colors">
                     <span class="lang-jp">詳細を見る</span><span class="lang-en">Learn More</span>
                     <ion-icon name="arrow-forward-outline" class="ml-1 text-lg"></ion-icon>
@@ -759,10 +944,16 @@
             <a href="https://www.web.nhk/tv/pl/series-tep-69NW4PWM7M/ep/MX3W416MQM" target="_blank" rel="noopener noreferrer" class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="media" data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2026.03.10</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">メディア</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">メディア</span><span class="lang-en">Media</span></span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">NHK「ニュースブリッジ北九州」で旦過市場でのフィールドワークが紹介されました。</h3>
-                <p class="text-sm text-gray-600 leading-relaxed mb-6">慶応大生が旦過市場で北九州の"食"を学ぶ様子が特集されました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">NHK「ニュースブリッジ北九州」で旦過市場でのフィールドワークが紹介されました。</span>
+                    <span class="lang-en">Fieldwork at Tanga Market was featured on NHK "News Bridge Kitakyushu".</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                    <span class="lang-jp">慶応大生が旦過市場で北九州の"食"を学ぶ様子が特集されました。</span>
+                    <span class="lang-en">A special feature covered Keio University students learning about Kitakyushu's "food" at Tanga Market.</span>
+                </p>
                 <div class="mt-auto flex items-center text-gold-500 font-semibold text-sm group-hover:text-gold-400 transition-colors">
                     <span class="lang-jp">詳細を見る</span><span class="lang-en">Learn More</span>
                     <ion-icon name="arrow-forward-outline" class="ml-1 text-lg"></ion-icon>
@@ -772,10 +963,16 @@
             <a href="https://www.instagram.com/p/DWBEjHvjxVD/" target="_blank" rel="noopener noreferrer" class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="project" data-aos="fade-up">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2026.03.09</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">九州栄養福祉大学さんでのグループワークとフィールドワークを行いました。</h3>
-                <p class="text-sm text-gray-600 leading-relaxed mb-6">「北九州の食の魅力を若者に伝えるとしたら？」をテーマに、九州栄養福祉大学さんとグループワークをして考え発表しました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">九州栄養福祉大学さんでのグループワークとフィールドワークを行いました。</span>
+                    <span class="lang-en">Conducted group work and fieldwork at Kyushu Nutrition Welfare University.</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                    <span class="lang-jp">「北九州の食の魅力を若者に伝えるとしたら？」をテーマに、九州栄養福祉大学さんとグループワークをして考え発表しました。</span>
+                    <span class="lang-en">Under the theme of "How to convey the appeal of Kitakyushu's food to young people?", we conducted group work with Kyushu Nutrition Welfare University and presented our ideas.</span>
+                </p>
                 <div class="mt-auto flex items-center text-gold-500 font-semibold text-sm group-hover:text-gold-400 transition-colors">
                     <span class="lang-jp">詳細を見る</span><span class="lang-en">Learn More</span>
                     <ion-icon name="arrow-forward-outline" class="ml-1 text-lg"></ion-icon>
@@ -785,11 +982,17 @@
             <a href="https://www.maff.go.jp/j/syokuiku/otona_syokuiku/platform/r7_benkyoukai.html" target="_blank" rel="noopener noreferrer" class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="project publication" data-aos="fade-up" data-aos-delay="50">
                 <div class="flex items-center space-x-2 mb-4">
                     <span class="text-sm font-medium text-gray-500 mr-1">2026.02.04</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">論文・発表</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">論文・発表</span><span class="lang-en">Publication</span></span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">農水省・官民連携食育プラットフォーム勉強会で学生が食育提案を発表しました。</h3>
-                <p class="text-sm text-gray-600 leading-relaxed mb-6">約220名が参加した勉強会で、神成研の学生が5グループに分かれ「大人の食育」の新提案を行いました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">農水省・官民連携食育プラットフォーム勉強会で学生が食育提案を発表しました。</span>
+                    <span class="lang-en">Students presented food education proposals at the MAFF Public-Private Partnership Food Education Platform Study Session.</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                    <span class="lang-jp">約220名が参加した勉強会で、神成研の学生が5グループに分かれ「大人の食育」の新提案を行いました。</span>
+                    <span class="lang-en">At a study session attended by about 220 people, Shinjo Lab students divided into 5 groups and made new proposals for "Food Education for Adults."</span>
+                </p>
                 <div class="mt-auto flex items-center text-gold-500 font-semibold text-sm group-hover:text-gold-400 transition-colors">
                     <span class="lang-jp">詳細を見る</span><span class="lang-en">Learn More</span>
                     <ion-icon name="arrow-forward-outline" class="ml-1 text-lg"></ion-icon>
@@ -799,11 +1002,17 @@
             <a href="https://www.instagram.com/p/DSELZ18j44h/" target="_blank" rel="noopener noreferrer" class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="project publication" data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center space-x-2 mb-4">
                     <span class="text-sm font-medium text-gray-500 mr-1">2026.01.20</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">論文・発表</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">論文・発表</span><span class="lang-en">Publication</span></span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">「かんしょくプロジェクト」ゲスト講演のお知らせ</h3>
-                <p class="text-sm text-gray-600 leading-relaxed mb-6">「食品ロス削減プロジェクトをどのようにスケールアップできるか？」をテーマにワークショップしました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">「かんしょくプロジェクト」ゲスト講演のお知らせ</span>
+                    <span class="lang-en">Guest Lecture Announcement: "Kanshoku Project"</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                    <span class="lang-jp">「食品ロス削減プロジェクトをどのようにスケールアップできるか？」をテーマにワークショップしました。</span>
+                    <span class="lang-en">We held a workshop on the theme of "How to scale up a food loss reduction project?"</span>
+                </p>
                 <div class="mt-auto flex items-center text-gold-500 font-semibold text-sm group-hover:text-gold-400 transition-colors">
                     <span class="lang-jp">詳細を見る</span><span class="lang-en">Learn More</span>
                     <ion-icon name="arrow-forward-outline" class="ml-1 text-lg"></ion-icon>
@@ -817,13 +1026,16 @@
                 <div class="p-8 flex-1 flex flex-col">
                     <div class="flex items-center space-x-2 mb-4">
                         <span class="text-sm font-medium text-gray-500 mr-1">2025.09.04</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">論文・発表</span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">論文・発表</span><span class="lang-en">Publication</span></span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">2025年度秋学期特別研究プロジェクトを十勝地域で行いました。</h3>
+                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                        <span class="lang-jp">2025年度秋学期特別研究プロジェクトを十勝地域で行いました。</span>
+                        <span class="lang-en">Conducted the Fall 2025 Special Research Project in the Tokachi region.</span>
+                    </h3>
                     <p class="text-sm text-gray-600 leading-relaxed">
-                        十勝の大規模農業についてスマート農業の実践とデータ連携を現地で学び、農家さんへのヒアリングを行いました。<br>
-                        <span class="text-xs text-gray-500 mt-3 block font-medium">令和7年9月1日(月)～9月4日(木)</span>
+                        <span class="lang-jp">十勝の大規模農業についてスマート農業の実践とデータ連携を現地で学び、農家さんへのヒアリングを行いました。<br><span class="text-xs text-gray-500 mt-3 block font-medium">令和7年9月1日(月)～9月4日(木)</span></span>
+                        <span class="lang-en">We learned about the practice of smart agriculture and data collaboration in large-scale agriculture in Tokachi on-site, and conducted interviews with farmers.<br><span class="text-xs text-gray-500 mt-3 block font-medium">September 1 (Mon) - 4 (Thu), 2025</span></span>
                     </p>
                 </div>
             </div>
@@ -835,13 +1047,16 @@
                 <div class="p-8 flex-1 flex flex-col">
                     <div class="flex items-center space-x-2 mb-4">
                         <span class="text-sm font-medium text-gray-500 mr-1">2025.03.15</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">プロジェクト</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100">論文・発表</span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">プロジェクト</span><span class="lang-en">Project</span></span>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-forest-50 text-forest-700 border border-forest-100"><span class="lang-jp">論文・発表</span><span class="lang-en">Publication</span></span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">2025年度春学期特別研究プロジェクトを静岡市で行いました。</h3>
+                    <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                        <span class="lang-jp">2025年度春学期特別研究プロジェクトを静岡市で行いました。</span>
+                        <span class="lang-en">Conducted the Spring 2025 Special Research Project in Shizuoka City.</span>
+                    </h3>
                     <p class="text-sm text-gray-600 leading-relaxed">
-                        市場や給食センター、茶畑での視察を行い、各グループ個別の視点でテーマを決めて市役所へ提案を行いました。<br>
-                        <span class="text-xs text-gray-500 mt-3 block font-medium">令和7年3月19日(水)～3月21日(金)</span>
+                        <span class="lang-jp">市場や給食センター、茶畑での視察を行い、各グループ個別の視点でテーマを決めて市役所へ提案を行いました。<br><span class="text-xs text-gray-500 mt-3 block font-medium">令和7年3月19日(水)～3月21日(金)</span></span>
+                        <span class="lang-en">We inspected markets, school lunch centers, and tea plantations, and each group decided on a theme from their unique perspective and made a proposal to the city hall.<br><span class="text-xs text-gray-500 mt-3 block font-medium">March 19 (Wed) - 21 (Fri), 2025</span></span>
                     </p>
                 </div>
             </div>
@@ -849,11 +1064,20 @@
             <div class="news-item group flex flex-col bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300" data-category="news" data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center space-x-3 mb-4">
                     <span class="text-sm font-medium text-gray-500">2025.1.23</span>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-gray-400 text-white">募集終了</span>
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-gray-400 text-white">
+                        <span class="lang-jp">募集終了</span><span class="lang-en">Closed</span>
+                    </span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">2026年度の研究会メンバーの募集を締め切りました。</h3>
-                <p class="text-sm text-gray-600 leading-relaxed">たくさんのご応募ありがとうございました。</p>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug mb-3">
+                    <span class="lang-jp">2026年度の研究会メンバーの募集を締め切りました。</span>
+                    <span class="lang-en">Recruitment for 2026 lab members has been closed.</span>
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    <span class="lang-jp">たくさんのご応募ありがとうございました。</span>
+                    <span class="lang-en">Thank you very much for your numerous applications.</span>
+                </p>
             </div>
+
         </div>
       </div>
     </section>
