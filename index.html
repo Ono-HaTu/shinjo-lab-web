@@ -23,7 +23,7 @@
         extend: {
           colors: {
             forest: { 50:'#f4f8f4',100:'#dce8dc',300:'#a8c8a8',500:'#5b9466',600:'#3f704c',700:'#31573d', 900: '#0b1d10' }, 
-            gold: { 300:'#f9e4a8',400:'#e3c46a',500:'#c6a94b' }
+            gold: { 300:'#f9e4a8',400:'#e3c46a',500:'#c6a94b', 600:'#a88c3a', 700:'#8c732b' }
           },
           fontFamily: {
             sans: ['Noto Sans JP','Inter','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],
@@ -449,7 +449,7 @@
               </div>
             </div>
             
-            <p class="text-center text-gold-500 text-lg md:text-xl font-bold leading-relaxed tracking-wide">
+            <p class="text-center text-gold-600 text-lg md:text-xl font-bold leading-relaxed tracking-wide">
               <span class="lang-jp">
                 <span class="inline-block">食・農・健康を横断し、</span><span class="inline-block">テクノロジー×現場知で</span><span class="inline-block">社会実装を推進</span><br>
                 <span class="inline-block">データ基盤・設計・運用まで</span><span class="inline-block">一気通貫で取り組む</span>
@@ -520,7 +520,7 @@
                   the next social infrastructure is born."
                 </span>
             </blockquote>
-            <p class="mt-6 text-sm font-semibold text-gold-500 tracking-widest">— SHINJO Atsushi Lab.</p>
+            <p class="mt-6 text-sm font-semibold text-gold-600 tracking-widest">— SHINJO Atsushi Lab.</p>
           </aside>
         </section>
       </div>
@@ -539,8 +539,8 @@
         <div class="max-w-4xl mx-auto space-y-12" data-aos="fade-up">
           <article class="card group hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
             <a href="https://www.kri.sfc.keio.ac.jp/ja/consortium/fstcg/" target="_blank" rel="noopener noreferrer" class="block">
-              <div class="img-frame frame-16x9 md:pt-[45%] overflow-hidden rounded-xl">
-                <img src="./images/26.jpg" alt="食・フードサイエンス＆テクノロジー共同研究機構のイメージ画像" loading="lazy" decoding="async" class="transition-transform duration-500 group-hover:scale-105"/>
+              <div class="img-frame frame-16x9 md:pt-[45%] overflow-hidden rounded-xl" style="background-color: #ffffff;">
+                <img src="./images/26.jpg" alt="食・フードサイエンス＆テクノロジー共同研究機構のイメージ画像" loading="lazy" decoding="async" class="transition-transform duration-500 group-hover:scale-105" style="object-fit: contain;"/>
               </div>
               <div class="pt-6 md:pt-8">
                 <span class="text-xs font-bold text-gold-500 tracking-wider">CONSORTIUM</span>
@@ -562,8 +562,8 @@
 
           <article class="card group hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
             <a href="https://agri-platform.org/" target="_blank" rel="noopener noreferrer" class="block">
-              <div class="img-frame frame-16x9 md:pt-[45%] overflow-hidden rounded-xl">
-                <img src="./images/29.png" alt="アグリプラットフォームコンソーシアムのイメージ画像" loading="lazy" decoding="async" class="transition-transform duration-500 group-hover:scale-105"/>
+              <div class="img-frame frame-16x9 md:pt-[45%] overflow-hidden rounded-xl" style="background-color: #ffffff;">
+                <img src="./images/29.png" alt="アグリプラットフォームコンソーシアムのイメージ画像" loading="lazy" decoding="async" class="transition-transform duration-500 group-hover:scale-105" style="object-fit: contain;"/>
               </div>
               <div class="pt-6 md:pt-8">
                 <span class="text-xs font-bold text-gold-500 tracking-wider">CONSORTIUM</span>
@@ -814,11 +814,13 @@
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">緒方 遥人</span><span class="lang-en">Haruto Ogata</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
             </div>
+            
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
-              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/7.JPG" alt="片山太治朗のプロフィール写真" loading="lazy" decoding="async"/></div>
+              <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/7.JPG" alt="片山太治朗のプロフィール写真" loading="lazy" decoding="async" style="object-position: top;"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">片山 太治朗</span><span class="lang-en">Tajiro Katayama</span></h4>
               <p class="mt-2 text-sm font-medium text-gold-500"><span class="lang-jp">卒業生</span><span class="lang-en">Alumni</span></p>
             </div>
+            
             <div class="bg-white rounded-xl shadow-sm p-8 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
               <div class="img-frame frame-1x1 w-full mb-6"><img src="./images/8.JPG" alt="小林雪音のプロフィール写真" loading="lazy" decoding="async"/></div>
               <h4 class="text-xl font-bold text-gray-800"><span class="lang-jp">小林 雪音</span><span class="lang-en">Yukine Kobayashi</span></h4>
@@ -1198,6 +1200,13 @@
       const isHidden = mobileMenu.classList.toggle('hidden');
       menuIconOpen.classList.toggle('hidden', !isHidden);
       menuIconClose.classList.toggle('hidden', isHidden);
+      
+      // スマホメニュー開閉時の背景スクロールロック制御
+      if (!isHidden) {
+        document.body.style.overflow = 'hidden'; // メニューを開いた時はスクロールを固定
+      } else {
+        document.body.style.overflow = ''; // 閉じた時はスクロール固定を解除
+      }
     });
     
     document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
@@ -1205,6 +1214,7 @@
         mobileMenu.classList.add('hidden'); 
         menuIconOpen.classList.remove('hidden');
         menuIconClose.classList.add('hidden');
+        document.body.style.overflow = ''; // メニュー内のリンクをクリックした時もスクロール固定を解除
       });
     });
 
