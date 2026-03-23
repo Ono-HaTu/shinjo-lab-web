@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 初期言語を 'ja' に設定 -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -36,6 +37,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -55,14 +57,17 @@
     .hero { position:relative; height: 100vh; height: 100dvh; min-height:560px; background-image:linear-gradient(rgba(49,87,61,.65),rgba(49,87,61,.65)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1920&auto=format&fit=crop'); background-size:cover; background-position:center; color:#fff; text-align:center; isolation:isolate; }
     #hero-content { transition: transform 0.1s ease-out; will-change: transform; }
     .hero h1 { font-family:'Playfair Display',serif; font-weight:800; line-height:1.02; letter-spacing:.02em; font-size:clamp(48px,8vw,100px); background:linear-gradient(90deg,#f9e4a8 0%,#e3c46a 60%,#fff 100%); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 10px 36px rgba(227,196,106,.28); }
-    
+    .hero p { font-size:clamp(14px,2vw,18px); opacity:.95; }
+
     .btn-main { display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#3f704c,#5b9466); color:white; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(63,112,76,.38); transition:transform .2s ease, box-shadow .2s ease; }
     .btn-main:hover { transform:translateY(-1px); box-shadow:0 16px 32px rgba(63,112,76,.5); }
+
     .btn-gold { display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,#e3c46a,#c6a94b); color:#0b1d10; padding:.8rem 1.2rem; border-radius:9999px; font-weight:800; box-shadow:0 10px 24px rgba(198,169,75,.25); transition:transform .2s ease, box-shadow .2s ease; }
     .btn-gold:hover { transform:translateY(-1px); box-shadow:0 16px 32px rgba(198,169,75,.35); }
     
-    .card { background:rgba(255,255,255,.95); border:1px solid rgba(198,169,75,.2); border-radius:22px; box-shadow:0 10px 28px rgba(3,7,18,.06); transition:transform .22s ease, box-shadow .22s ease; }
+    .card { background:rgba(255,255,255,.95); border:1px solid rgba(198,169,75,.2); border-radius:22px; padding:1.5rem; box-shadow:0 10px 28px rgba(3,7,18,.06); transition:transform .22s ease, box-shadow .22s ease; }
     .card:hover { transform:translateY(-3px); box-shadow:0 18px 36px rgba(3,7,18,.12); }
+
     h2.section-title { font-family:'Playfair Display',serif; font-size:2.3rem; color:#3f704c; text-align:center; margin-bottom:2rem; }
 
     .img-frame { position:relative; overflow:hidden; border-radius:16px; background:#f4f8f4; border:1px solid rgba(198, 169, 75, 0.3); box-shadow:0 2px 4px rgba(0,0,0,0.02); }
@@ -93,7 +98,18 @@
     .news-item { transition:opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
 
     /* アクセシビリティ: キーボードフォーカス時のスタイル */
-    a:focus-visible, button:focus-visible { outline: 2px dashed #c6a94b; outline-offset: 4px; }
+    a:focus-visible, button:focus-visible, .thumb-card:focus-visible { outline: 2px dashed #c6a94b; outline-offset: 4px; }
+
+    /* トランプ風ギャラリー用スタイル */
+    .thumb-card {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        transform-origin: bottom center;
+    }
+    .thumb-card:hover, .thumb-card:focus-visible {
+        transform: translateY(-20px) scale(1.1) rotate(0deg) !important;
+        z-index: 20 !important;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
 
     #splash-screen { position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:#f9faf8; z-index:999999; display:flex; justify-content:center; align-items:center; flex-direction:column; transition:opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
     #splash-screen.hidden-splash { opacity:0; pointer-events:none; transform:translateY(-20px); }
@@ -280,17 +296,45 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div class="lg:col-span-5 space-y-8" data-aos="fade-up" data-aos-delay="50">
-            <div>
-              <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-forest-50 aspect-[4/3] relative group">
-                <img src="./images/28.jpg" alt="研究会の全体写真" class="absolute inset-0 w-full h-full object-cover img-protected transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+            
+            <!-- ▼▼▼ トランプ風ギャラリーとハッシュタグの囲み ▼▼▼ -->
+            <div class="flex flex-col items-center">
+              
+              <!-- メイン画像表示エリア -->
+              <div class="w-full rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-forest-50 aspect-[4/3] relative group">
+                <img id="gallery-main-img" src="./images/28.jpg" alt="研究会の全体写真" class="absolute inset-0 w-full h-full object-cover img-protected transition-opacity duration-300 group-hover:scale-105" loading="lazy" decoding="async">
               </div>
               
-              <div class="mt-8 mb-2 flex items-center justify-center gap-4 text-forest-700">
+              <!-- トランプ風 サムネイルカード群 -->
+              <!-- キーボード操作対応: tabindex="0", role="button", aria-label追加 -->
+              <div class="w-full mt-6 h-16 md:h-24 relative flex justify-center items-end z-10" aria-label="年号ごとの写真ギャラリー">
+                  <div class="flex items-end pb-2">
+                      <div class="thumb-card cursor-pointer w-20 h-14 md:w-28 md:h-20 rounded-lg border-2 border-gold-500 shadow-md bg-white relative -ml-8 md:-ml-12 first:ml-0" data-src="./images/28.jpg" data-year="2026" style="z-index: 5; transform: rotate(-10deg);" tabindex="0" role="button" aria-label="2026年の写真を表示">
+                          <img src="./images/28.jpg" class="w-full h-full object-cover rounded-md pointer-events-none" loading="lazy" alt="2026年">
+                      </div>
+                      <div class="thumb-card cursor-pointer w-20 h-14 md:w-28 md:h-20 rounded-lg border-2 border-white shadow-md bg-white relative -ml-8 md:-ml-12" data-src="./images/23.jpg" data-year="2025" style="z-index: 4; transform: rotate(-5deg);" tabindex="0" role="button" aria-label="2025年の写真を表示">
+                          <img src="./images/23.jpg" class="w-full h-full object-cover rounded-md pointer-events-none" loading="lazy" alt="2025年">
+                      </div>
+                      <div class="thumb-card cursor-pointer w-20 h-14 md:w-28 md:h-20 rounded-lg border-2 border-white shadow-md bg-white relative -ml-8 md:-ml-12" data-src="./images/30.jpg" data-year="2024" style="z-index: 3; transform: rotate(0deg);" tabindex="0" role="button" aria-label="2024年の写真を表示">
+                          <img src="./images/30.jpg" class="w-full h-full object-cover rounded-md pointer-events-none" loading="lazy" alt="2024年">
+                      </div>
+                      <div class="thumb-card cursor-pointer w-20 h-14 md:w-28 md:h-20 rounded-lg border-2 border-white shadow-md bg-white relative -ml-8 md:-ml-12" data-src="./images/31.jpg" data-year="2023" style="z-index: 2; transform: rotate(5deg);" tabindex="0" role="button" aria-label="2023年の写真を表示">
+                          <img src="./images/31.jpg" class="w-full h-full object-cover rounded-md pointer-events-none" loading="lazy" alt="2023年">
+                      </div>
+                      <div class="thumb-card cursor-pointer w-20 h-14 md:w-28 md:h-20 rounded-lg border-2 border-white shadow-md bg-white relative -ml-8 md:-ml-12" data-src="./images/32.jpg" data-year="2022" style="z-index: 1; transform: rotate(10deg);" tabindex="0" role="button" aria-label="2022年の写真を表示">
+                          <img src="./images/32.jpg" class="w-full h-full object-cover rounded-md pointer-events-none" loading="lazy" alt="2022年">
+                      </div>
+                  </div>
+              </div>
+
+              <!-- 年号 -->
+              <div class="mt-6 mb-2 flex items-center justify-center gap-4 text-forest-700">
                 <div class="h-px w-12 md:w-16 bg-gold-600/30"></div>
-                <span class="text-4xl md:text-5xl font-bold font-serif tracking-widest">2026</span>
+                <span id="gallery-year" class="text-4xl md:text-5xl font-bold font-serif tracking-widest transition-opacity duration-300" aria-live="polite">2026</span>
                 <div class="h-px w-12 md:w-16 bg-gold-600/30"></div>
               </div>
 
+              <!-- ハッシュタグのリスト -->
               <div class="flex flex-wrap gap-2 mt-5 justify-center">
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#食と農業</span><span class="lang-en">#FoodAndAgriculture</span></span>
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#スマート農業</span><span class="lang-en">#SmartAgriculture</span></span>
@@ -299,8 +343,9 @@
                 <span class="inline-block px-3 py-1.5 text-xs font-semibold text-forest-700 bg-forest-50 border border-forest-100 rounded-full transition-colors hover:bg-forest-100 cursor-default"><span class="lang-jp">#AI</span><span class="lang-en">#AI</span></span>
               </div>
             </div>
-            
-            <p class="text-center text-gold-600 text-lg md:text-xl font-bold leading-relaxed tracking-wide">
+            <!-- ▲▲▲ トランプ風ギャラリーとハッシュタグの囲みここまで ▲▲▲ -->
+
+            <p class="text-center text-gold-600 text-lg md:text-xl font-bold leading-relaxed tracking-wide mt-8">
               <span class="lang-jp">
                 <span class="inline-block">食・農・健康を横断し、</span><span class="inline-block">テクノロジー×現場知で</span><span class="inline-block">社会実装を推進</span><br>
                 <span class="inline-block">データ基盤・設計・運用まで</span><span class="inline-block">一気通貫で取り組む</span>
@@ -1161,12 +1206,12 @@
         
         // イベント委譲によるメモリ負荷軽減
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('a, button, .nav-link, .news-filter-btn, .news-item')) {
+            if (e.target.closest('a, button, .nav-link, .news-filter-btn, .news-item, .thumb-card')) {
                 cursor.classList.add('grow');
             }
         });
         document.addEventListener('mouseout', (e) => {
-             if (e.target.closest('a, button, .nav-link, .news-filter-btn, .news-item')) {
+             if (e.target.closest('a, button, .nav-link, .news-filter-btn, .news-item, .thumb-card')) {
                 cursor.classList.remove('grow');
             }
         });
@@ -1212,6 +1257,52 @@
             });
         });
     });
+
+    // --- トランプ風ギャラリー機能 ---
+    const thumbCards = document.querySelectorAll('.thumb-card');
+    const mainImg = document.getElementById('gallery-main-img');
+    const yearText = document.getElementById('gallery-year');
+
+    if (thumbCards.length > 0 && mainImg && yearText) {
+        thumbCards.forEach(card => {
+            // クリック時とキーボード操作時（Enter/Space）の共通処理
+            const triggerChange = function() {
+                // アクティブ状態の切り替え
+                thumbCards.forEach(c => {
+                    c.classList.remove('border-gold-500');
+                    c.classList.add('border-white');
+                });
+                this.classList.remove('border-white');
+                this.classList.add('border-gold-500');
+                
+                const newSrc = this.dataset.src;
+                const newYear = this.dataset.year;
+
+                // フェードアウト
+                mainImg.style.opacity = '0';
+                yearText.style.opacity = '0';
+
+                // 画像とテキストの入れ替え＆フェードイン
+                setTimeout(() => {
+                    mainImg.src = newSrc;
+                    yearText.textContent = newYear;
+                    mainImg.style.opacity = '1';
+                    yearText.style.opacity = '1';
+                }, 300);
+            };
+
+            // マウスクリックに対応
+            card.addEventListener('click', triggerChange);
+            
+            // キーボード操作（Enter/Space）に対応
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault(); // スクロール等のデフォルト動作を防止
+                    triggerChange.call(this);
+                }
+            });
+        });
+    }
   </script>
 </body>
 </html>
