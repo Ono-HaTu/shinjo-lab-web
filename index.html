@@ -26,10 +26,20 @@
             gold: { 300:'#f9e4a8',400:'#e3c46a',500:'#c6a94b', 600:'#a88c3a', 700:'#8c732b' }
           },
           fontFamily: {
-            sans: ['Noto Sans JP','Inter','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],
-            serif: ['Playfair Display','serif']
+            sans:['Noto Sans JP','Inter','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],
+            serif:['Playfair Display','serif']
           },
-          boxShadow:{ soft:'0 8px 28px rgba(2,6,23,.08)' }
+          boxShadow:{ soft:'0 8px 28px rgba(2,6,23,.08)' },
+          keyframes: {
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+              '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' }
+            }
+          },
+          animation: {
+            shake: 'shake 0.4s ease-in-out'
+          }
         }
       }
     };
@@ -165,6 +175,27 @@
     .splash-logo { font-family:'Playfair Display', serif; font-size:clamp(2rem, 5vw, 3rem); font-weight:700; color:#3f704c; opacity:0; animation:fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     .splash-sub { margin-top:0.75rem; font-size:clamp(0.75rem, 2vw, 1rem); color:#c6a94b; font-weight:600; letter-spacing:0.15em; opacity:0; animation:fadeUpSplash 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards; }
     @keyframes fadeUpSplash { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ▼▼▼ Gourmet Map Styles ▼▼▼ */
+    .dot-pattern {
+      background-color: #f4f8f4;
+      background-image: radial-gradient(circle, #dce8dc 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+    }
+    .map-mask {
+      -webkit-mask-image: url('https://raw.githubusercontent.com/djaiss/mapsicon/master/all/jp/vector.svg');
+      mask-image: url('https://raw.githubusercontent.com/djaiss/mapsicon/master/all/jp/vector.svg');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      background-color: rgba(91, 148, 102, 0.4); /* forest-500 @ 40% */
+      pointer-events: none;
+    }
+    #map-viewport { touch-action: none; } /* スワイプ時のページスクロールを防止 */
+    /* ▲▲▲ Gourmet Map Styles ▲▲▲ */
   </style>
 </head>
 <body class="">
@@ -205,6 +236,7 @@
           <a href="#" class="nav-link hover:text-gold-400" data-page="member"><span class="lang-jp">Members</span><span class="lang-en">Members</span></a>
           <a href="#" class="nav-link hover:text-gold-400" data-page="course"><span class="lang-jp">Course</span><span class="lang-en">Course</span></a>
           <a href="#" class="nav-link hover:text-gold-400" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
+          <a href="#" class="nav-link hover:text-gold-400" data-page="gourmet"><span class="lang-jp">Gourmet 🔒</span><span class="lang-en">Gourmet 🔒</span></a>
           <a href="#" class="nav-link hover:text-gold-400" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
         </div>
         
@@ -228,6 +260,7 @@
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="member"><span class="lang-jp">Members</span><span class="lang-en">Members</span></a>
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="course"><span class="lang-jp">Course</span><span class="lang-en">Course</span></a>
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="news"><span class="lang-jp">News</span><span class="lang-en">News</span></a>
+        <a href="#" class="nav-link text-forest-700 font-semibold" data-page="gourmet"><span class="lang-jp">Gourmet 🔒</span><span class="lang-en">Gourmet 🔒</span></a>
         <a href="#" class="nav-link text-forest-700 font-semibold" data-page="contact"><span class="lang-jp">Contact</span><span class="lang-en">Contact</span></a>
         
         <div class="mt-4 flex items-center space-x-4 border-t border-gold-500/30 pt-4">
@@ -1188,6 +1221,95 @@
         </div>
       </div>
     </section>
+<!-- ===== Gourmet ページ ===== -->
+    <section id="page-gourmet" class="page">
+      <div class="container mx-auto max-w-6xl py-20 px-4">
+        <header class="text-center space-y-3 mb-12" data-aos="fade-up">
+          <h2 class="section-title">Gourmet</h2>
+          <p class="text-forest-700/80 font-medium">
+            <span class="lang-jp">研究室メンバーのおすすめグルメマップ</span>
+            <span class="lang-en">Lab Members' Recommended Gourmet Map</span>
+          </p>
+        </header>
+
+        <!-- ▼ 認証画面（初期表示） ▼ -->
+        <div id="gourmet-auth-screen" class="max-w-md mx-auto card p-8 md:p-10 text-center transition-opacity duration-300" data-aos="fade-up" data-aos-delay="100">
+          <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-forest-50 border border-forest-100 text-forest-700 mb-6 shadow-inner">
+            <ion-icon name="lock-closed" class="text-4xl"></ion-icon>
+          </div>
+          <h3 class="text-2xl font-bold text-forest-700 font-serif mb-2 tracking-wide">Members Only</h3>
+          <p class="text-sm text-gray-500 mb-8 font-medium">
+            <span class="lang-jp">閲覧にはパスワードが必要です</span>
+            <span class="lang-en">Password required to access this content.</span>
+          </p>
+          <form id="gourmet-auth-form" class="space-y-5" onsubmit="return false;">
+            <div>
+                <input type="password" id="gourmet-password" placeholder="Password" class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent text-center tracking-widest text-lg bg-white shadow-sm transition-all" required>
+            </div>
+            <p id="gourmet-auth-error" class="text-red-500 text-sm hidden font-bold bg-red-50 py-2 rounded-md border border-red-100">
+                <span class="lang-jp">パスワードが間違っています</span>
+                <span class="lang-en">Incorrect password</span>
+            </p>
+            <button type="submit" class="btn-main w-full justify-center text-lg py-3 mt-2 shadow-lg">
+              <ion-icon name="key-outline" class="text-xl"></ion-icon>
+              <span class="lang-jp">ロックを解除</span><span class="lang-en">Unlock</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- ▼ マップ画面 (認証成功で表示) ▼ -->
+        <div id="gourmet-map-screen" class="hidden transition-opacity duration-500 space-y-12">
+          
+          <!-- マップエリア -->
+          <div class="relative w-full max-w-3xl mx-auto" data-aos="fade-up">
+            
+            <!-- Zoom コントロールUI -->
+            <div class="absolute top-4 right-4 z-20 flex flex-col gap-3">
+              <button id="btn-zoom-in" class="w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-forest-700 hover:bg-gold-500 hover:text-white transition-all border border-gray-100 focus:outline-none focus:ring-2 focus:ring-gold-500" aria-label="Zoom In">
+                <ion-icon name="add" class="text-2xl"></ion-icon>
+              </button>
+              <button id="btn-zoom-out" class="w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] flex items-center justify-center text-forest-700 hover:bg-gold-500 hover:text-white transition-all border border-gray-100 focus:outline-none focus:ring-2 focus:ring-gold-500" aria-label="Zoom Out">
+                <ion-icon name="remove" class="text-2xl"></ion-icon>
+              </button>
+            </div>
+            
+            <!-- ヒントUI -->
+            <div class="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 text-xs md:text-sm font-bold text-forest-700 flex items-center gap-2">
+              <ion-icon name="information-circle" class="text-lg text-gold-500"></ion-icon>
+              <span class="lang-jp">拡大中はドラッグで移動可能</span>
+              <span class="lang-en">Drag to pan while zoomed in</span>
+            </div>
+
+            <!-- マップビューポート（枠） -->
+            <div id="map-viewport" class="overflow-hidden w-full relative dot-pattern rounded-[2rem] border-2 border-forest-100 shadow-[inset_0_4px_20px_rgba(0,0,0,0.05)] aspect-square cursor-grab active:cursor-grabbing bg-white/50">
+                
+                <!-- ズーム・移動対象のコンテンツ -->
+                <div id="map-content" class="relative w-full h-full transition-transform duration-200 ease-out origin-center">
+                    <!-- SVGシルエットマスク -->
+                    <div class="map-mask absolute inset-0"></div>
+<!-- ピン描画レイヤー -->
+                    <div id="pins-container" class="absolute inset-0" style="transform: scale(1.4) translate(-2%, 4%);"></div>
+                </div>
+            </div>
+          </div>
+
+          <!-- レストランリストエリア -->
+          <div id="restaurant-list-container" class="max-w-4xl mx-auto pt-10 border-t border-gold-500/20" data-aos="fade-up">
+            <h3 class="text-2xl md:text-3xl font-bold text-forest-700 mb-8 flex items-center gap-3 justify-center md:justify-start">
+                <div class="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center">
+                    <ion-icon name="restaurant" class="text-gold-600 text-xl"></ion-icon>
+                </div>
+                <span class="lang-jp"><span id="selected-pref-title-jp">全国の登録店舗</span></span>
+                <span class="lang-en"><span id="selected-pref-title-en">Registered Restaurants</span></span>
+            </h3>
+            
+            <div id="restaurant-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <!-- JSで動的にレストランカードを挿入 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ===== Contact ページ ===== -->
     <section id="page-contact" class="page">
@@ -1246,8 +1368,8 @@
     <ion-icon name="arrow-up-outline"></ion-icon>
   </a>
 
+  <!-- ▼▼▼ ここから既存のスクリプト（一切の省略・短縮なし） ▼▼▼ -->
   <script>
-    // --- 1. オープニングアニメーション制御 ---
     window.addEventListener('load', () => {
         const splash = document.getElementById('splash-screen');
         setTimeout(() => {
@@ -1389,12 +1511,14 @@
             cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
         });
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, .news-filter-btn, .news-item, [data-aos], .youtube-facade, .dot-indicator')) {
+            // ▼ ピンもホバーエフェクトの対象に追加 ▼
+            if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, .news-filter-btn, .news-item, [data-aos], .youtube-facade, .dot-indicator, #pins-container > div')) {
                 cursor.classList.add('grow');
             }
         });
         document.addEventListener('mouseout', (e) => {
-             if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, .news-filter-btn, .news-item, [data-aos], .youtube-facade, .dot-indicator')) {
+            // ▼ ピンもホバーエフェクトの対象に追加 ▼
+             if (e.target.closest('a, button, .btn-main, .btn-gold, .nav-link, .news-filter-btn, .news-item,[data-aos], .youtube-facade, .dot-indicator, #pins-container > div')) {
                 cursor.classList.remove('grow');
             }
         });
@@ -1552,6 +1676,350 @@
         });
     });
 
+    // ▼▼▼ ここから新規追加: Gourmetページのスクリプト（モジュール化） ▼▼▼
+    (function() {
+      // 1. 都道府県データと座標（％）
+      const mapPinsData =[
+        { name: "北海道", en: "Hokkaido", top: 22, left: 78 },
+        { name: "青森県", en: "Aomori", top: 33, left: 74 },
+        { name: "岩手県", en: "Iwate", top: 40, left: 75 },
+        { name: "宮城県", en: "Miyagi", top: 45, left: 73 },
+        { name: "秋田県", en: "Akita", top: 39, left: 71 },
+        { name: "山形県", en: "Yamagata", top: 44, left: 70 },
+        { name: "福島県", en: "Fukushima", top: 49, left: 72 },
+        { name: "茨城県", en: "Ibaraki", top: 54, left: 73 },
+        { name: "栃木県", en: "Tochigi", top: 52, left: 70 },
+        { name: "群馬県", en: "Gunma", top: 52, left: 67 },
+        { name: "埼玉県", en: "Saitama", top: 57, left: 68 },
+        { name: "千葉県", en: "Chiba", top: 60, left: 71 },
+        { name: "東京都", en: "Tokyo", top: 59, left: 67 },
+        { name: "神奈川県", en: "Kanagawa", top: 63.5, left: 65 },
+        { name: "新潟県", en: "Niigata", top: 49, left: 67 },
+        { name: "富山県", en: "Toyama", top: 52, left: 60 },
+        { name: "石川県", en: "Ishikawa", top: 51, left: 57 },
+        { name: "福井県", en: "Fukui", top: 56, left: 56 },
+        { name: "山梨県", en: "Yamanashi", top: 58, left: 64 },
+        { name: "長野県", en: "Nagano", top: 55, left: 62 },
+        { name: "岐阜県", en: "Gifu", top: 59, left: 58 },
+        { name: "静岡県", en: "Shizuoka", top: 65.5, left: 59.5 },
+        { name: "愛知県", en: "Aichi", top: 63.5, left: 56.5 },
+        { name: "三重県", en: "Mie", top: 66, left: 53.5 },
+        { name: "滋賀県", en: "Shiga", top: 61.5, left: 53.5 },
+        { name: "京都府", en: "Kyoto", top: 59.5, left: 51 },
+        { name: "大阪府", en: "Osaka", top: 64, left: 50.5 },
+        { name: "兵庫県", en: "Hyogo", top: 61, left: 47.5 },
+        { name: "奈良県", en: "Nara", top: 65.5, left: 51.5 },
+        { name: "和歌山県", en: "Wakayama", top: 69, left: 51 },
+        { name: "鳥取県", en: "Tottori", top: 59, left: 44 },
+        { name: "島根県", en: "Shimane", top: 60.5, left: 40 },
+        { name: "岡山県", en: "Okayama", top: 62.5, left: 44.5 },
+        { name: "広島県", en: "Hiroshima", top: 63.5, left: 40.5 },
+        { name: "山口県", en: "Yamaguchi", top: 66, left: 35 },
+        { name: "徳島県", en: "Tokushima", top: 68.5, left: 46.5 },
+        { name: "香川県", en: "Kagawa", top: 66, left: 45 },
+        { name: "愛媛県", en: "Ehime", top: 68, left: 41 },
+        { name: "高知県", en: "Kochi", top: 71.5, left: 42.5 },
+        { name: "福岡県", en: "Fukuoka", top: 67, left: 31.5 },
+        { name: "佐賀県", en: "Saga", top: 69, left: 29.5 },
+        { name: "長崎県", en: "Nagasaki", top: 71, left: 28 },
+        { name: "熊本県", en: "Kumamoto", top: 74, left: 31.5 },
+        { name: "大分県", en: "Oita", top: 70, left: 34 },
+        { name: "宮崎県", en: "Miyazaki", top: 76.5, left: 34 },
+        { name: "鹿児島県", en: "Kagoshima", top: 80, left: 30 },
+        { name: "沖縄県", en: "Okinawa", top: 90, left: 16 }
+      ];
+
+     // 2. レストランデータ (Googleから自動取得する)
+      let restaurantData =[];
+      const GAS_URL = "https://script.google.com/macros/s/AKfycby4ORh17JbvhAUersZwOq---nxkUY-kP5MRH0u0QKyABQ5fo4MssyZ48nqah0lpDoj6/exec";
+
+      // 3. パスワード認証＆データ取得ロジック
+      const authForm = document.getElementById('gourmet-auth-form');
+      const authInput = document.getElementById('gourmet-password');
+      const authScreen = document.getElementById('gourmet-auth-screen');
+      const mapScreen = document.getElementById('gourmet-map-screen');
+      const authError = document.getElementById('gourmet-auth-error');
+      let isMapInitialized = false;
+
+      if(authForm) {
+          authForm.addEventListener('submit', (e) => {
+              e.preventDefault();
+              
+              const pass = authInput.value;
+              const submitBtn = authForm.querySelector('button[type="submit"]');
+              const originalBtnText = submitBtn.innerHTML;
+              
+              // ボタンを「読み込み中」に変える
+              submitBtn.innerHTML = '<ion-icon name="sync-outline" class="text-xl animate-spin"></ion-icon> 読み込み中...';
+              submitBtn.disabled = true;
+
+              // GAS（スプレッドシート）にパスワードを送ってデータをもらう
+              fetch(GAS_URL + "?p=" + encodeURIComponent(pass))
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        // パスワード正解 ＆ データ取得成功
+                        restaurantData = result.data.map(item => {
+                            let prefEn = item.pref;
+                            let prefMatch = mapPinsData.find(p => p.name === item.pref);
+                            if(prefMatch) prefEn = prefMatch.en;
+                            return {
+                                pref: item.pref,
+                                prefEn: prefEn,
+                                name: item.name,
+                                category: item.category,
+                                recommender: item.recommender,
+                                desc: item.desc,
+                                descEn: item.desc,
+                                img: item.img
+                            };
+                        });
+
+                        authInput.blur();
+                        authScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            authScreen.classList.add('hidden');
+                            mapScreen.classList.remove('hidden');
+                            mapScreen.style.opacity = '0';
+                            setTimeout(() => mapScreen.style.opacity = '1', 50);
+                            
+                            if(!isMapInitialized) {
+                                initMap();
+                                renderRestaurants(); // 全件表示
+                                isMapInitialized = true;
+                            }
+                        }, 300);
+                    } else {
+                        // 不正解
+                        throw new Error("Password incorrect");
+                    }
+                })
+                .catch(error => {
+                    // パスワード間違い等のエラー処理
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    authForm.classList.add('animate-shake');
+                    authError.classList.remove('hidden');
+                    setTimeout(() => authForm.classList.remove('animate-shake'), 400);
+                    authInput.value = '';
+                });
+          });
+      }
+      // 4. マップの初期化とピン描画
+      const pinsContainer = document.getElementById('pins-container');
+
+      function initMap() {
+          if(!pinsContainer) return;
+          mapPinsData.forEach(pref => {
+              // その都道府県の店舗数をカウント
+              const count = restaurantData.filter(r => r.pref === pref.name).length;
+              
+              const pinWrapper = document.createElement('div');
+              pinWrapper.className = `absolute group cursor-pointer transition-transform duration-200 hover:scale-125 hover:z-30 ${count > 0 ? '' : 'opacity-40 grayscale'}`;
+              pinWrapper.style.top = `${pref.top}%`;
+              pinWrapper.style.left = `${pref.left}%`;
+              pinWrapper.style.transform = 'translate(-50%, -50%)';
+              
+              // 店舗がある場合のみアニメーション（波紋）を表示
+              let pingHtml = count > 0 ? `<div class="absolute -inset-1.5 rounded-full bg-gold-400 animate-ping opacity-60"></div>` : '';
+              
+              pinWrapper.innerHTML = `
+                  ${pingHtml}
+                  <div class="relative w-3 h-3 md:w-4 md:h-4 rounded-full bg-gold-500 border-2 border-white shadow-md"></div>
+                  
+                  <!-- Tooltip -->
+                  <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block bg-white/95 backdrop-blur text-forest-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap pointer-events-none z-40 border border-gold-500/30">
+                      <span class="lang-jp">${pref.name} (${count}件)</span>
+                      <span class="lang-en">${pref.en} (${count})</span>
+                      <!-- 吹き出しの尻尾 -->
+                      <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-white"></div>
+                  </div>
+              `;
+
+              // ピンクリック時の処理
+              pinWrapper.addEventListener('click', (e) => {
+                  e.stopPropagation(); // ドラッグイベント等との干渉を防ぐ
+                  renderRestaurants(pref);
+                  
+                  // 少しスクロールしてリストを見せる
+                  document.getElementById('restaurant-list-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+              });
+
+              pinsContainer.appendChild(pinWrapper);
+          });
+          
+          // 動的に追加した要素にも言語設定を反映
+          if(typeof setLanguage === 'function') {
+              setLanguage(document.documentElement.getAttribute('lang') || 'ja');
+          }
+      }
+
+      // 5. レストランカードの描画
+      const restaurantGrid = document.getElementById('restaurant-grid');
+      const prefTitleJp = document.getElementById('selected-pref-title-jp');
+      const prefTitleEn = document.getElementById('selected-pref-title-en');
+
+      function renderRestaurants(pref = null) {
+          if(!restaurantGrid) return;
+          restaurantGrid.innerHTML = '';
+          let filtered = restaurantData;
+
+          if (pref) {
+              filtered = restaurantData.filter(r => r.pref === pref.name);
+              if(prefTitleJp) prefTitleJp.textContent = `${pref.name} のおすすめ`;
+              if(prefTitleEn) prefTitleEn.textContent = `Recommended in ${pref.en}`;
+          } else {
+              if(prefTitleJp) prefTitleJp.textContent = `全国の登録店舗`;
+              if(prefTitleEn) prefTitleEn.textContent = `Registered Restaurants`;
+          }
+
+          if (filtered.length === 0) {
+              restaurantGrid.innerHTML = `
+                  <div class="col-span-1 md:col-span-2 text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                      <ion-icon name="restaurant-outline" class="text-4xl text-gray-300 mb-3"></ion-icon>
+                      <p class="text-gray-500 font-medium">
+                          <span class="lang-jp">まだこのエリアのおすすめ情報は登録されていません。</span>
+                          <span class="lang-en">No recommendations registered for this area yet.</span>
+                      </p>
+                  </div>
+              `;
+              if(typeof setLanguage === 'function') setLanguage(document.documentElement.getAttribute('lang') || 'ja');
+              return;
+          }
+
+          filtered.forEach((r, index) => {
+              const card = document.createElement('article');
+              card.className = "bg-white rounded-2xl p-5 shadow-sm border border-gray-100 border-l-4 border-l-gold-500 transition-transform hover:-translate-y-1 hover:shadow-md flex flex-col";
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(10px)';
+              
+              card.innerHTML = `
+                  <div class="flex items-start gap-4 mb-4">
+                      <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-forest-50">
+                          <img src="${r.img}" alt="${r.name}" class="w-full h-full object-cover">
+                      </div>
+                      <div>
+                          <span class="inline-block px-2 py-1 text-[10px] font-bold text-forest-700 bg-forest-50 border border-forest-100 rounded mb-1">${r.category}</span>
+                          <h4 class="text-lg font-bold text-gray-800 leading-tight">${r.name}</h4>
+                          <p class="text-xs text-gold-600 font-medium mt-1">
+                              <ion-icon name="location" class="align-text-bottom"></ion-icon>
+                              <span class="lang-jp">${r.pref}</span><span class="lang-en">${r.prefEn}</span>
+                          </p>
+                      </div>
+                  </div>
+                  <p class="text-sm text-gray-600 leading-relaxed mb-4 flex-grow">
+                      <span class="lang-jp">${r.desc}</span>
+                      <span class="lang-en">${r.descEn}</span>
+                  </p>
+                  <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-3">
+                      <div class="flex items-center gap-2">
+                          <div class="w-6 h-6 rounded-full bg-gold-200 flex items-center justify-center text-gold-700 text-xs font-bold">
+                              ${r.recommender.charAt(0)}
+                          </div>
+                          <span class="text-xs font-medium text-gray-500">
+                              <span class="lang-jp">推薦: ${r.recommender}</span>
+                              <span class="lang-en">By: ${r.recommender}</span>
+                          </span>
+                      </div>
+                  </div>
+              `;
+              restaurantGrid.appendChild(card);
+              
+              setTimeout(() => {
+                  card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+              }, 50 * index);
+          });
+          if(typeof setLanguage === 'function') setLanguage(document.documentElement.getAttribute('lang') || 'ja');
+      }
+
+      // 6. マップのズーム＆ドラッグ（パニング）機能
+      const mapViewport = document.getElementById('map-viewport');
+      const mapContent = document.getElementById('map-content');
+      const btnZoomIn = document.getElementById('btn-zoom-in');
+      const btnZoomOut = document.getElementById('btn-zoom-out');
+
+      let mapScale = 1;
+      let isDraggingMap = false;
+      let startX, startY;
+      let translateX = 0, translateY = 0;
+
+      if(mapViewport && mapContent && btnZoomIn && btnZoomOut) {
+          const updateMapTransform = (smooth = false) => {
+              mapContent.style.transition = smooth ? 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+              mapContent.style.transform = `translate(${translateX}px, ${translateY}px) scale(${mapScale})`;
+          };
+
+          btnZoomIn.addEventListener('click', () => {
+              if (mapScale < 3) mapScale += 0.5;
+              updateMapTransform(true);
+          });
+
+          btnZoomOut.addEventListener('click', () => {
+              if (mapScale > 1) {
+                  mapScale -= 0.5;
+              }
+              if (mapScale <= 1) {
+                  mapScale = 1;
+                  translateX = 0;
+                  translateY = 0;
+              }
+              updateMapTransform(true);
+          });
+
+          // ドラッグロジック
+          const getClientPos = (e) => {
+              return {
+                  x: e.type.includes('mouse') ? e.clientX : e.touches[0].clientX,
+                  y: e.type.includes('mouse') ? e.clientY : e.touches[0].clientY
+              };
+          };
+
+          const startMapDrag = (e) => {
+              if(mapScale <= 1) return; // 拡大時のみドラッグ許可
+              isDraggingMap = true;
+              mapViewport.classList.add('cursor-grabbing');
+              const pos = getClientPos(e);
+              startX = pos.x - translateX;
+              startY = pos.y - translateY;
+          };
+
+          const doMapDrag = (e) => {
+              if(!isDraggingMap || mapScale <= 1) return;
+              e.preventDefault(); // スマホでのスクロールを防止
+              const pos = getClientPos(e);
+              
+              let newX = pos.x - startX;
+              let newY = pos.y - startY;
+              
+              const limit = (mapScale - 1) * 300; 
+              newX = Math.max(-limit, Math.min(limit, newX));
+              newY = Math.max(-limit, Math.min(limit, newY));
+
+              translateX = newX;
+              translateY = newY;
+              updateMapTransform(false);
+          };
+
+          const endMapDrag = () => {
+              isDraggingMap = false;
+              mapViewport.classList.remove('cursor-grabbing');
+          };
+
+          // マウスイベント
+          mapViewport.addEventListener('mousedown', startMapDrag);
+          window.addEventListener('mousemove', doMapDrag);
+          window.addEventListener('mouseup', endMapDrag);
+
+          // タッチイベント
+          mapViewport.addEventListener('touchstart', startMapDrag, {passive: false});
+          window.addEventListener('touchmove', doMapDrag, {passive: false});
+          window.addEventListener('touchend', endMapDrag);
+      }
+    })();
+    // ▲▲▲ ここまで新規追加: Gourmetページのスクリプト（モジュール化） ▲▲▲
   </script>
 </body>
 </html>
