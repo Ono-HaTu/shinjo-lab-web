@@ -1980,7 +1980,7 @@
   //  Google Sheets 連携設定
   //  ↓↓↓ デプロイしたApps ScriptのURLをここに貼る ↓↓↓
   // ============================================================
-  const G_GAS_URL = 'https://script.google.com/macros/s/AKfycbyjcTAoHYWQCHCv3Ign6pVg-I7GGunHDspeO3PQ18Re-KFW9Bm1fiGh6AMaLu8PCQWI/exec';  // ← ここにApps ScriptのURLを貼ってください
+  const G_GAS_URL = 'https://script.google.com/macros/s/AKfycbx_8zUvpoXCWWDTiCpirDlei0En_-dy6P1MDGQWoSXkSJxDznzLp6CYmgX5_OMl1R4P/exec';  // ← ここにApps ScriptのURLを貼ってください
   // ============================================================
 
   // ===== CONSTANTS =====
@@ -2324,10 +2324,39 @@
   let gUploadedPhotos=[];
   function gHandlePhotoSelect(e){gAddPhotos(Array.from(e.target.files));e.target.value='';}
   function gHandlePhotoDrop(e){e.preventDefault();e.currentTarget.classList.remove('dragover');if(e.dataTransfer.files)gAddPhotos(Array.from(e.dataTransfer.files));}
-  function gAddPhotos(files){
-    const imgs=files.filter(f=>f.type.startsWith('image/'));const rem=5-gUploadedPhotos.length;
-    if(rem<=0){alert('写真は最大5枚までです');return;}
-    imgs.slice(0,rem).forEach(f=>{const r=new FileReader();r.onload=e=>{gUploadedPhotos.push(e.target.result);gRenderPhotoPreview();};r.readAsDataURL(f);});
+ function gAddPhotos(files){
+    const imgs = files.filter(f => f.type.startsWith('image/'));
+    const rem = 5 - gUploadedPhotos.length;
+    if (rem <= 0) { alert('写真は最大5枚までです'); return; }
+    
+    imgs.slice(0, rem).forEach(f => {
+      const r = new FileReader();
+      r.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_SIZE = 500;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+          } else {
+            if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+          gUploadedPhotos.push(dataUrl);
+          gRenderPhotoPreview();
+        };
+        img.src = e.target.result;
+      };
+      r.readAsDataURL(f);
+    });
   }
   function gRemovePhoto(i){gUploadedPhotos.splice(i,1);gRenderPhotoPreview();}
   function gRenderPhotoPreview(){
@@ -2375,7 +2404,7 @@
     inp.value='';
   }
 
-  function gHandleSubmit(e){
+async function gHandleSubmit(e){
     e.preventDefault();
     const name=document.getElementById('g-f-name').value.trim();
     const link=document.getElementById('g-f-link').value.trim();
@@ -2387,13 +2416,46 @@
     const scenes=Array.from(document.querySelectorAll('#g-f-scenes .g-form-chip.selected')).map(c=>c.dataset.val);
     const reasons=Array.from(document.querySelectorAll('#g-f-reasons .g-form-chip.selected')).map(c=>c.dataset.val);
     const category=gFormState.category;
+    
     if(!name||!pref||!recommender||!category){alert('必須項目を入力してください');return false;}
-    const newRestaurant = {id:gNextId++,name,link,pref,area,category,recommender,comment,scenes,reasons,price,rating:gFormState.rating,likes:0,photos:[...gUploadedPhotos],comments:[],createdAt:new Date().toISOString()};
-    gRestaurants.push(newRestaurant);
-    gSaveToSheet(newRestaurant);
-    document.getElementById('g-add-form').style.display='none';
-    document.getElementById('g-success-msg').style.display='block';
-    gRenderAll();
+
+    // 送信ボタンを「送信中...」に変更し、連打を防ぐ
+    const submitBtn = document.querySelector('.g-submit-btn');
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = '画像をアップロード中... ⏳';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+
+    try {
+      const newRestaurant = {
+        id: gNextId++,
+        name, link, pref, area, category, recommender, comment, scenes, reasons, price,
+        rating: gFormState.rating, likes: 0,
+        photos: [...gUploadedPhotos],
+        comments: [],
+        createdAt: new Date().toISOString()
+      };
+      
+      // GASへ送信（完了を待つ）
+      await gSaveToSheet(newRestaurant);
+      
+      // 成功した場合
+      document.getElementById('g-add-form').style.display='none';
+      document.getElementById('g-success-msg').style.display='block';
+      
+      // DriveのURLに変換された最新データをGASから取得し直して描画
+      gLoadFromSheet(); 
+      
+    } catch (error) {
+      alert('エラーが発生しました。もう一度お試しください。');
+      console.error(error);
+    } finally {
+      // ボタンの状態を元に戻す
+      submitBtn.innerText = originalBtnText;
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
+    }
+    
     return false;
   }
   function gResetForm(){
