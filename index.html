@@ -2422,7 +2422,7 @@ async function gHandleSubmit(e){
     // 送信ボタンを「送信中...」に変更し、連打を防ぐ
     const submitBtn = document.querySelector('.g-submit-btn');
     const originalBtnText = submitBtn.innerText;
-    submitBtn.innerText = '画像をアップロード中... ⏳';
+    submitBtn.innerText = '保存中... (数秒かかります) ⏳';
     submitBtn.disabled = true;
     submitBtn.style.opacity = '0.7';
 
@@ -2431,20 +2431,22 @@ async function gHandleSubmit(e){
         id: gNextId++,
         name, link, pref, area, category, recommender, comment, scenes, reasons, price,
         rating: gFormState.rating, likes: 0,
-        photos: [...gUploadedPhotos],
+        photos: [...gUploadedPhotos], // 圧縮済みの画像を送信
         comments: [],
         createdAt: new Date().toISOString()
       };
       
-      // GASへ送信（完了を待つ）
+      // GASへ送信（エラーを回避する安全な通信方式）
       await gSaveToSheet(newRestaurant);
       
-      // 成功した場合
+      // 成功のメッセージを表示
       document.getElementById('g-add-form').style.display='none';
       document.getElementById('g-success-msg').style.display='block';
       
-      // DriveのURLに変換された最新データをGASから取得し直して描画
-      gLoadFromSheet(); 
+      // Google Driveで画像の保存が完了するのを待つため、3秒後にデータを再読み込み
+      setTimeout(() => {
+        gLoadFromSheet();
+      }, 3000);
       
     } catch (error) {
       alert('エラーが発生しました。もう一度お試しください。');
