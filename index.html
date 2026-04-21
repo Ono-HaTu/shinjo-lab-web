@@ -1992,12 +1992,11 @@
   </script>
 
   <!-- ▼▼▼ Gourmet 新システム スクリプト ▼▼▼ -->
-  <script>
+    <script>
   // ============================================================
   //  Google Sheets 連携設定
-  //  ↓↓↓ デプロイしたApps ScriptのURLをここに貼る ↓↓↓
   // ============================================================
-  const G_GAS_URL = 'https://script.google.com/macros/s/AKfycbyjcTAoHYWQCHCv3Ign6pVg-I7GGunHDspeO3PQ18Re-KFW9Bm1fiGh6AMaLu8PCQWI/exec';  // ← ここにApps ScriptのURLを貼ってください
+  const G_GAS_URL = 'https://script.google.com/macros/s/AKfycbyjcTAoHYWQCHCv3Ign6pVg-I7GGunHDspeO3PQ18Re-KFW9Bm1fiGh6AMaLu8PCQWI/exec';
   // ============================================================
 
   // ===== CONSTANTS =====
@@ -2005,7 +2004,7 @@
   const G_CATEGORIES = ['居酒屋','焼肉','寿司','ラーメン','カフェ','バー','イタリアン','中華','洋食','和食','定食・食堂','焼き鳥'];
   let G_SCENES = ['デート','1人','友達','ゼミ','接待','いいデート'];
   let G_REASONS = ['安い','マジうまい','雰囲気','穴場','健康','高い'];
-  const G_CATEGORY_EMOJIS = {'居酒屋':'&#127866;','焼肉':'&#129385;','寿司':'&#127843;','ラーメン':'&#127836;','カフェ':'&#9749;','バー':'&#127864;','イタリアン':'&#127837;','中華':'&#129384;','洋食':'&#127860;','和食':'&#127857;','定食・食堂':'','焼き鳥':'&#127831;'};
+  const G_CATEGORY_EMOJIS = {'居酒屋':'🍺','焼肉':'🥩','寿司':'🍣','ラーメン':'🍜','カフェ':'☕','バー':'🍸','イタリアン':'🍝','中華':'🥟','洋食':'🍴','和食':'🍱','定食・食堂':'','焼き鳥':'🍢'};
   const G_PRICE_OPTIONS = ['~500','500~1,000','1,000~2,000','2,000~3,000','3,000~5,000','5,000~8,000','8,000~10,000','10,000~15,000','15,000~20,000','20,000~'];
 
   const G_PIN_POSITIONS = {
@@ -2025,7 +2024,6 @@
 
   // ===== DATA =====
   let gRestaurants = [];
-  let gNextId = 1;
 
   // ===== Google Sheets SYNC =====
   async function gLoadFromSheet() {
@@ -2035,7 +2033,6 @@
       const data = await res.json();
       if (data.status === 'ok' && data.restaurants) {
         gRestaurants = data.restaurants;
-        gNextId = gRestaurants.length ? Math.max(...gRestaurants.map(r=>r.id)) + 1 : 1;
         gRestaurants.forEach(r => {
           (r.scenes||[]).forEach(s => { if (!G_SCENES.includes(s)) G_SCENES.push(s); });
           (r.reasons||[]).forEach(s => { if (!G_REASONS.includes(s)) G_REASONS.push(s); });
@@ -2046,28 +2043,30 @@
   }
 
   function gUseFallbackData() {
-    gRestaurants = [
-      { id:1,name:'湘南台ホルモン',link:'https://tabelog.com/kanagawa/A1404/A140404/14004870/',pref:'神奈川県',area:'湘南台',category:'焼肉',recommender:'TOMO',comment:'ホルモンが新鮮で激安！深夜もやってる',scenes:['友達','ゼミ'],reasons:['安い','マジうまい'],price:'2,000~3,000',rating:9,likes:3,photos:['https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=400&fit=crop'],comments:[],createdAt:new Date().toISOString() },
-    ];
-    gNextId = 2;
+    gRestaurants = [];
   }
 
+  // ★ 修正: mode: 'no-cors' を外し、エラーを throw して UI に伝える
   async function gSaveToSheet(restaurant) {
     if (!G_GAS_URL) return;
     try {
-      await fetch(G_GAS_URL, {
-        method: 'POST', mode: 'no-cors',
+      const res = await fetch(G_GAS_URL, {
+        method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'add', data: restaurant })
       });
-    } catch(e) { console.error('保存エラー:', e); }
+      if (!res.ok) throw new Error('通信エラーが発生しました');
+    } catch(e) { 
+      console.error('保存エラー:', e); 
+      throw e; 
+    }
   }
 
   async function gDeleteFromSheet(id) {
     if (!G_GAS_URL) return;
     try {
       await fetch(G_GAS_URL, {
-        method: 'POST', mode: 'no-cors',
+        method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'delete', id: id })
       });
@@ -2078,11 +2077,35 @@
     if (!G_GAS_URL) return;
     try {
       await fetch(G_GAS_URL, {
-        method: 'POST', mode: 'no-cors',
+        method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'addComment', restaurantId, comment })
       });
     } catch(e) { console.error('コメント保存エラー:', e); }
+  }
+
+  // ★ 新規追加: お店のいいねを保存
+  async function gSaveLikeToSheet(restaurantId, likes, liked) {
+    if (!G_GAS_URL) return;
+    try {
+      await fetch(G_GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'updateLike', restaurantId, likes, liked })
+      });
+    } catch(e) { console.error('いいね保存エラー:', e); }
+  }
+
+  // ★ 新規追加: コメントのいいねを保存
+  async function gSaveCommentLikeToSheet(restaurantId, commentIndex, likes, liked) {
+    if (!G_GAS_URL) return;
+    try {
+      await fetch(G_GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'updateCommentLike', restaurantId, commentIndex, likes, liked })
+      });
+    } catch(e) { console.error('コメントいいね保存エラー:', e); }
   }
 
   // ===== AUTH =====
@@ -2183,9 +2206,9 @@
       const tagsHTML = [...(r.scenes||[]).map(s=>`<span class="g-tag-pill g-tag-scene">${s}</span>`),...(r.reasons||[]).map(s=>`<span class="g-tag-pill g-tag-reason">${s}</span>`),r.price?`<span class="g-tag-pill g-tag-price">${r.price}円</span>`:'' ].join('');
       const hasPhotos = r.photos && r.photos.length > 0;
       const photoHTML = hasPhotos
-        ? `<div class="g-card-photo"><img src="${r.photos[0]}" alt="${gEsc(r.name)}" loading="lazy">${r.photos.length>1?`<div class="g-card-photo-count">&#128247; ${r.photos.length}</div>`:''}</div>`
-        : `<div class="g-card-no-photo">${G_CATEGORY_EMOJIS[r.category]||'&#127860;'}</div>`;
-      const linkHTML = r.link ? `<a href="${gEsc(r.link)}" target="_blank" rel="noopener" class="g-link-icon" onclick="event.stopPropagation()" title="お店のページへ">&#128279;</a>` : '';
+        ? `<div class="g-card-photo"><img src="${r.photos[0]}" alt="${gEsc(r.name)}" loading="lazy">${r.photos.length>1?`<div class="g-card-photo-count">📸 ${r.photos.length}</div>`:''}</div>`
+        : `<div class="g-card-no-photo">${G_CATEGORY_EMOJIS[r.category]||'🍽️'}</div>`;
+      const linkHTML = r.link ? `<a href="${gEsc(r.link)}" target="_blank" rel="noopener" class="g-link-icon" onclick="event.stopPropagation()" title="お店のページへ">🔗</a>` : '';
       const locText = [r.pref, r.area].filter(Boolean).join(' / ');
       const newBadge = gGetNewBadgeHTML(r);
       const newCommentBadge = gHasNewComments(r) ? '<span class="g-new-badge-comment">NEW</span>' : '';
@@ -2201,13 +2224,13 @@
           <div class="g-card-tags">${tagsHTML}</div>
           <div class="g-card-comment">${gEsc(r.comment||'')}</div>
           <div class="g-card-actions">
-            <button class="g-comment-count-btn" onclick="event.stopPropagation();gOpenModal(${r.id})">&#128172; <span>${(r.comments||[]).length}</span>${newCommentBadge}</button>
-            <button class="g-like-btn ${r.liked?'liked':''}" onclick="event.stopPropagation();gToggleLike(${r.id},this)">&#128077; <span>${r.likes||0}</span></button>
+            <button class="g-comment-count-btn" onclick="event.stopPropagation();gOpenModal(${r.id})">💬 <span>${(r.comments||[]).length}</span>${newCommentBadge}</button>
+            <button class="g-like-btn ${r.liked?'liked':''}" onclick="event.stopPropagation();gToggleLike(${r.id},this)">👍 <span>${r.likes||0}</span></button>
           </div>
           <div class="g-recommender-bar">
             <div class="g-recommender-avatar">${init}</div>
             <div class="g-recommender-info">
-              <div class="g-recommender-label">&#127775; Recommended by</div>
+              <div class="g-recommender-label">🌟 Recommended by</div>
               <div class="g-recommender-name">${gEsc(r.recommender)}</div>
             </div>
             <div class="g-card-rating"><div class="g-rating-num">${r.rating}</div><div class="g-rating-max">/10</div></div>
@@ -2300,8 +2323,8 @@
   }
   function gUpdateGalleryView() {
     const m=document.getElementById('g-m-gallery-main'),d=document.getElementById('g-m-gallery-dots');
-    const prev=gGalleryPhotos.length>1?`<button class="g-gallery-nav prev" onclick="event.stopPropagation();gGalleryPrev()">&#8249;</button>`:'';
-    const next=gGalleryPhotos.length>1?`<button class="g-gallery-nav next" onclick="event.stopPropagation();gGalleryNext()">&#8250;</button>`:'';
+    const prev=gGalleryPhotos.length>1?`<button class="g-gallery-nav prev" onclick="event.stopPropagation();gGalleryPrev()">‹</button>`:'';
+    const next=gGalleryPhotos.length>1?`<button class="g-gallery-nav next" onclick="event.stopPropagation();gGalleryNext()">›</button>`:'';
     m.innerHTML=`${prev}<img src="${gGalleryPhotos[gGalleryIndex]}" alt="photo">${next}`;
     d.innerHTML=gGalleryPhotos.length>1?gGalleryPhotos.map((_,i)=>`<button class="g-gallery-dot ${i===gGalleryIndex?'active':''}" onclick="event.stopPropagation();gGalleryGo(${i})"></button>`).join(''):'';
     d.style.display=gGalleryPhotos.length>1?'flex':'none';
@@ -2319,9 +2342,10 @@
       <div class="g-comment-item">
         <div class="g-comment-item-header"><div class="g-comment-item-avatar">${x.name.charAt(0)}</div><div class="g-comment-item-name">${gEsc(x.name)}${x.createdAt&&gIsNew(x.createdAt)?'<span class="g-new-badge-comment" style="margin-left:6px">NEW</span>':''}</div><div class="g-comment-item-time">${gEsc(x.time)}</div></div>
         <div class="g-comment-item-text">${gEsc(x.text)}</div>
-        <div class="g-comment-item-actions"><button class="g-comment-like-btn ${x.liked?'liked':''}" onclick="gToggleCommentLike(${r.id},${i},this)">&#10084;&#65039; <span>${x.likes}</span></button></div>
+        <div class="g-comment-item-actions"><button class="g-comment-like-btn ${x.liked?'liked':''}" onclick="gToggleCommentLike(${r.id},${i},this)">❤️ <span>${x.likes||0}</span></button></div>
       </div>`).join('');
   }
+  
   function gPostComment() {
     if(!gCurrentModalId)return;const r=gRestaurants.find(x=>x.id===gCurrentModalId);if(!r)return;
     const n=document.getElementById('g-m-cmt-name').value.trim(),t=document.getElementById('g-m-cmt-text').value.trim();
@@ -2331,17 +2355,20 @@
     gSaveCommentToSheet(r.id, cmt);
     document.getElementById('g-m-cmt-text').value='';gRenderModalComments(r);gRenderCards();
   }
+
+  // ★ 修正: コメントいいね時の保存処理呼び出し
   function gToggleCommentLike(rid,ci,btn){
     const r=gRestaurants.find(x=>x.id===rid);if(!r||!r.comments||!r.comments[ci])return;
-    const c=r.comments[ci];c.liked=!c.liked;c.likes+=(c.liked?1:-1);
+    const c=r.comments[ci];c.liked=!c.liked;c.likes=(c.likes||0)+(c.liked?1:-1);
     btn.classList.toggle('liked',c.liked);btn.querySelector('span').textContent=c.likes;
+    gSaveCommentLikeToSheet(rid, ci, c.likes, c.liked); // ←追加
   }
 
   // ===== PHOTO UPLOAD =====
   let gUploadedPhotos=[];
   function gHandlePhotoSelect(e){gAddPhotos(Array.from(e.target.files));e.target.value='';}
   function gHandlePhotoDrop(e){e.preventDefault();e.currentTarget.classList.remove('dragover');if(e.dataTransfer.files)gAddPhotos(Array.from(e.dataTransfer.files));}
- function gAddPhotos(files){
+  function gAddPhotos(files){
     const imgs = files.filter(f => f.type.startsWith('image/'));
     const rem = 5 - gUploadedPhotos.length;
     if (rem <= 0) { alert('写真は最大5枚までです'); return; }
@@ -2352,7 +2379,7 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_SIZE = 500;
+          const MAX_SIZE = 400; // ★ 修正: 500pxから400pxへ縮小
           let width = img.width;
           let height = img.height;
 
@@ -2366,7 +2393,7 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
           
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // ★ 修正: 圧縮率を0.6から0.5へ変更
           gUploadedPhotos.push(dataUrl);
           gRenderPhotoPreview();
         };
@@ -2377,11 +2404,16 @@
   }
   function gRemovePhoto(i){gUploadedPhotos.splice(i,1);gRenderPhotoPreview();}
   function gRenderPhotoPreview(){
-    document.getElementById('g-f-photo-previews').innerHTML=gUploadedPhotos.map((s,i)=>`<div class="g-photo-preview-item"><img src="${s}" alt="preview"><button class="g-photo-preview-remove" onclick="gRemovePhoto(${i})">&#10005;</button></div>`).join('');
+    document.getElementById('g-f-photo-previews').innerHTML=gUploadedPhotos.map((s,i)=>`<div class="g-photo-preview-item"><img src="${s}" alt="preview"><button class="g-photo-preview-remove" onclick="gRemovePhoto(${i})">✕</button></div>`).join('');
   }
 
-  // ===== LIKES =====
-  function gToggleLike(id,btn){const r=gRestaurants.find(x=>x.id===id);if(!r)return;r.liked=!r.liked;r.likes=(r.likes||0)+(r.liked?1:-1);btn.classList.toggle('liked',r.liked);btn.querySelector('span').textContent=r.likes;}
+  // ★ 修正: お店いいね時の保存処理呼び出し
+  function gToggleLike(id,btn){
+    const r=gRestaurants.find(x=>x.id===id);if(!r)return;
+    r.liked=!r.liked;r.likes=(r.likes||0)+(r.liked?1:-1);
+    btn.classList.toggle('liked',r.liked);btn.querySelector('span').textContent=r.likes;
+    gSaveLikeToSheet(id, r.likes, r.liked); // ←追加
+  }
 
   // ===== DELETE =====
   function gDeleteRestaurant() {
@@ -2421,7 +2453,7 @@
     inp.value='';
   }
 
-async function gHandleSubmit(e){
+  async function gHandleSubmit(e){
     e.preventDefault();
     const name=document.getElementById('g-f-name').value.trim();
     const link=document.getElementById('g-f-link').value.trim();
@@ -2436,7 +2468,6 @@ async function gHandleSubmit(e){
     
     if(!name||!pref||!recommender||!category){alert('必須項目を入力してください');return false;}
 
-    // 送信ボタンを「送信中...」に変更し、連打を防ぐ
     const submitBtn = document.querySelector('.g-submit-btn');
     const originalBtnText = submitBtn.innerText;
     submitBtn.innerText = '保存中... (数秒かかります) ⏳';
@@ -2445,31 +2476,30 @@ async function gHandleSubmit(e){
 
     try {
       const newRestaurant = {
-        id: gNextId++,
+        // ★ 修正: クライアント側でほぼ重複しないタイムスタンプベースのIDを生成
+        id: Date.now() + Math.floor(Math.random() * 1000), 
         name, link, pref, area, category, recommender, comment, scenes, reasons, price,
         rating: gFormState.rating, likes: 0,
-        photos: [...gUploadedPhotos], // 圧縮済みの画像を送信
+        photos: [...gUploadedPhotos],
         comments: [],
         createdAt: new Date().toISOString()
       };
       
-      // GASへ送信（エラーを回避する安全な通信方式）
+      // GASへ送信
       await gSaveToSheet(newRestaurant);
       
-      // 成功のメッセージを表示
       document.getElementById('g-add-form').style.display='none';
       document.getElementById('g-success-msg').style.display='block';
       
-      // Google Driveで画像の保存が完了するのを待つため、3秒後にデータを再読み込み
       setTimeout(() => {
         gLoadFromSheet();
       }, 3000);
       
     } catch (error) {
-      alert('エラーが発生しました。もう一度お試しください。');
+      // ★ 修正: エラー時にアラートを出す
+      alert('通信エラーが発生しました。写真のサイズが大きいか、ネットワークが不安定な可能性があります。');
       console.error(error);
     } finally {
-      // ボタンの状態を元に戻す
       submitBtn.innerText = originalBtnText;
       submitBtn.disabled = false;
       submitBtn.style.opacity = '1';
@@ -2477,6 +2507,7 @@ async function gHandleSubmit(e){
     
     return false;
   }
+  
   function gResetForm(){
     document.getElementById('g-add-form').reset();document.getElementById('g-add-form').style.display='block';
     document.getElementById('g-success-msg').style.display='none';gFormState={category:'',rating:0};
@@ -2490,7 +2521,6 @@ async function gHandleSubmit(e){
 
   function gEsc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
   document.getElementById('g-search-input').addEventListener('input', gOnSearch);
-  </script>
   <!-- ▲▲▲ Gourmet 新システム スクリプトここまで ▲▲▲ -->
 
 </body>
